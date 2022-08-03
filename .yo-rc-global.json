@@ -1,0 +1,8 @@
+{
+  "generator-jhipster:7.9.0": {
+    "promptValues": {
+      "packageName": "com.labreferencia.reportemercadeo",
+      "nativeLanguage": "es"
+    }
+  }
+}

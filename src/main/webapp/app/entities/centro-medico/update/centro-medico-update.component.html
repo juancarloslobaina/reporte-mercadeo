@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-centro-medico-heading"
+        data-cy="CentroMedicoCreateUpdateHeading"
+        jhiTranslate="reporteMercadeoApp.centroMedico.home.createOrEditLabel"
+      >
+        Crear o editar Centro Medico
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.nombreCentroMedico" for="field_nombreCentroMedico"
+            >Nombre Centro Medico</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="nombreCentroMedico"
+            id="field_nombreCentroMedico"
+            data-cy="nombreCentroMedico"
+            formControlName="nombreCentroMedico"
+          />
+          <div
+            *ngIf="
+              editForm.get('nombreCentroMedico')!.invalid &&
+              (editForm.get('nombreCentroMedico')!.dirty || editForm.get('nombreCentroMedico')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('nombreCentroMedico')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.ciudad" for="field_ciudad">Ciudad</label>
+          <!--select
+            class="form-control"
+            id="field_ciudad"
+            data-cy="ciudad"
+            name="ciudad"
+            formControlName="ciudad"
+            [compareWith]="compareCiudad"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="ciudadOption" *ngFor="let ciudadOption of ciudadsSharedCollection">{{ ciudadOption.nombreCiudad }}</option>
+          </select-->
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

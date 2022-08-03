@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="centroMedico">
+      <h2 data-cy="centroMedicoDetailsHeading"><span jhiTranslate="reporteMercadeoApp.centroMedico.detail.title">Centro Medico</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ centroMedico.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="reporteMercadeoApp.centroMedico.nombreCentroMedico">Nombre Centro Medico</span></dt>
+        <dd>
+          <span>{{ centroMedico.nombreCentroMedico }}</span>
+        </dd>
+        <dt><span jhiTranslate="reporteMercadeoApp.centroMedico.ciudad">Ciudad</span></dt>
+        <dd>
+          <div *ngIf="centroMedico.ciudad">
+            <a [routerLink]="['/ciudad', centroMedico.ciudad.id, 'view']">{{ centroMedico.ciudad?.nombreCiudad }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/centro-medico', centroMedico.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

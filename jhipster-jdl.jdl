@@ -1,0 +1,50 @@
+
+entity Ciudad {
+	nombreCiudad String required
+}
+
+entity Especialidad {
+	nombreEspecialidad String required
+}
+
+entity CentroMedico {
+	nombreCentroMedico String required	
+}
+
+entity Doctor {
+	nombreDoctor String required,    
+    correoPersonal String,
+    correoCorporativo String,
+    telefonoPersonal String,
+    telefonoCorporativo String
+}
+
+entity Reporte {
+	descripcion TextBlob required,
+	fecha Instant required
+}
+
+relationship OneToOne {
+	Reporte{doctor(nombreDoctor)} to Doctor,
+    Reporte{centroMedico(nombreCentroMedico)} to CentroMedico,
+}
+
+relationship OneToOne {
+	Doctor{especialidad(nombreEspecialidad)} to Especialidad
+}
+
+relationship OneToOne {
+	CentroMedico{ciudad(nombreCiudad)} to Ciudad
+}
+
+// Set pagination options
+paginate Reporte, Doctor, Especialidad, CentroMedico, Ciudad with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
