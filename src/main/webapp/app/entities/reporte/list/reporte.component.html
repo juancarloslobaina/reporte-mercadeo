@@ -12,8 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-reporte"
-        [routerLink]="['/reporte/new']"
-      >
+        [routerLink]="'/reporte/new'">
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="reporteMercadeoApp.reporte.home.createLabel"> Crear nuevo Reporte </span>
       </button>
@@ -27,6 +26,8 @@
   <div class="alert alert-warning" id="no-result" *ngIf="reportes?.length === 0">
     <span jhiTranslate="reporteMercadeoApp.reporte.home.notFound">Ningún Reportes encontrado</span>
   </div>
+
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
 
   <div class="table-responsive" id="entities" *ngIf="reportes && reportes.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">

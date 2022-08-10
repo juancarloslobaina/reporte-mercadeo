@@ -94,7 +94,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reporteMercadeoApp.doctor.especialidad" for="field_especialidad">Especialidad</label>
-          <select
+          <!--select
             class="form-control"
             id="field_especialidad"
             data-cy="especialidad"
@@ -106,7 +106,19 @@
             <option [ngValue]="especialidadOption" *ngFor="let especialidadOption of especialidadsSharedCollection">
               {{ especialidadOption.nombreEspecialidad }}
             </option>
-          </select>
+          </select-->
+          <p-autoComplete
+            class="p-fluid"
+            [(ngModel)]="especialidadSeleccionada"
+            [ngModelOptions]="{standalone: true}"
+            id="field_especialidad"
+            name="especialidad"
+            [suggestions]="especialidadesCollection"
+            (completeMethod)="buscarEspecialidad($event)"
+            [dropdown]="true"
+            field="nombreEspecialidad"
+            (onSelect)="capturarEspecialidadSeleccionada($event)"
+          ></p-autoComplete>
         </div>
       </div>
 

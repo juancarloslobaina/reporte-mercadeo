@@ -14,12 +14,14 @@
 
         <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id"
+                 [readonly]="true"/>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.nombreCentroMedico" for="field_nombreCentroMedico"
-            >Nombre Centro Medico</label
+          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.nombreCentroMedico"
+                 for="field_nombreCentroMedico"
+          >Nombre Centro Medico</label
           >
           <input
             type="text"
@@ -45,24 +47,27 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.ciudad" for="field_ciudad">Ciudad</label>
-          <!--select
-            class="form-control"
+        <div class="form-group row mb-3">
+          <label class="form-label" jhiTranslate="reporteMercadeoApp.centroMedico.ciudad"
+                 for="field_ciudad">Ciudad</label>
+          <p-autoComplete
+            class="p-fluid"
+            [(ngModel)]="ciudadSeleccionada"
+            [ngModelOptions]="{standalone: true}"
             id="field_ciudad"
-            data-cy="ciudad"
             name="ciudad"
-            formControlName="ciudad"
-            [compareWith]="compareCiudad"
-          >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="ciudadOption" *ngFor="let ciudadOption of ciudadsSharedCollection">{{ ciudadOption.nombreCiudad }}</option>
-          </select-->
+            [suggestions]="ciudadsCollection"
+            (completeMethod)="buscarCiudad($event)"
+            [dropdown]="true"
+            field="nombreCiudad"
+            (onSelect)="capturarCiudadSeleccionada($event)"
+          ></p-autoComplete>
         </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary"
+                (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
         </button>
 

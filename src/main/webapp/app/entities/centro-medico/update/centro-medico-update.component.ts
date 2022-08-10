@@ -20,6 +20,10 @@ export class CentroMedicoUpdateComponent implements OnInit {
 
   ciudadsSharedCollection: ICiudad[] = [];
 
+  ciudadsCollection: ICiudad[] = [];
+
+  ciudadSeleccionada: ICentroMedico["ciudad"] | null = null;
+
   editForm: CentroMedicoFormGroup = this.centroMedicoFormService.createCentroMedicoFormGroup();
 
   constructor(
@@ -78,7 +82,7 @@ export class CentroMedicoUpdateComponent implements OnInit {
   protected updateForm(centroMedico: ICentroMedico): void {
     this.centroMedico = centroMedico;
     this.centroMedicoFormService.resetForm(this.editForm, centroMedico);
-
+    this.ciudadSeleccionada = this.editForm.value.ciudad;
     this.ciudadsSharedCollection = this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(
       this.ciudadsSharedCollection,
       centroMedico.ciudad
@@ -90,6 +94,19 @@ export class CentroMedicoUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
       .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centroMedico?.ciudad)))
-      .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));
+      .subscribe((ciudads: ICiudad[]) => {
+        this.ciudadsSharedCollection = ciudads;
+        this.ciudadsCollection = ciudads
+      });
+  }
+
+  protected buscarCiudad($event: { query: string; }): void {
+    this.ciudadsCollection = this.ciudadsSharedCollection.filter(x => x.nombreCiudad?.toLowerCase().includes($event.query.toLowerCase()));
+  }
+
+  protected capturarCiudadSeleccionada($event: ICiudad | null) : void {
+    this.ciudadSeleccionada = $event;
+    this.editForm.value.ciudad = $event;
+    this.editForm.controls.ciudad.setValue($event);
   }
 }
