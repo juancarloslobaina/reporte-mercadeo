@@ -39,7 +39,7 @@ const reporteRoute: Routes = [
     resolve: {
       reporte: ReporteRoutingResolveService,
     },
-    canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService]
   },
 ];
 

@@ -5,9 +5,10 @@ import { DoctorDetailComponent } from './detail/doctor-detail.component';
 import { DoctorUpdateComponent } from './update/doctor-update.component';
 import { DoctorDeleteDialogComponent } from './delete/doctor-delete-dialog.component';
 import { DoctorRoutingModule } from './route/doctor-routing.module';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
-  imports: [SharedModule, DoctorRoutingModule],
+  imports: [SharedModule, DoctorRoutingModule, AutoCompleteModule],
   declarations: [DoctorComponent, DoctorDetailComponent, DoctorUpdateComponent, DoctorDeleteDialogComponent],
 })
 export class DoctorModule {}

@@ -18,7 +18,11 @@ export class DoctorUpdateComponent implements OnInit {
   isSaving = false;
   doctor: IDoctor | null = null;
 
-  especialidadsSharedCollection: IEspecialidad[] = [];
+  especialidadesSharedCollection: IEspecialidad[] = [];
+
+  especialidadesCollection: IEspecialidad[] = [];
+
+  especialidadSeleccionada: IDoctor["especialidad"] | null = null;
 
   editForm: DoctorFormGroup = this.doctorFormService.createDoctorFormGroup();
 
@@ -79,9 +83,9 @@ export class DoctorUpdateComponent implements OnInit {
   protected updateForm(doctor: IDoctor): void {
     this.doctor = doctor;
     this.doctorFormService.resetForm(this.editForm, doctor);
-
-    this.especialidadsSharedCollection = this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(
-      this.especialidadsSharedCollection,
+    this.especialidadSeleccionada = this.editForm.value.especialidad;
+    this.especialidadesSharedCollection = this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(
+      this.especialidadesSharedCollection,
       doctor.especialidad
     );
   }
@@ -91,10 +95,23 @@ export class DoctorUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IEspecialidad[]>) => res.body ?? []))
       .pipe(
-        map((especialidads: IEspecialidad[]) =>
-          this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(especialidads, this.doctor?.especialidad)
+        map((especialidades: IEspecialidad[]) =>
+          this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(especialidades, this.doctor?.especialidad)
         )
       )
-      .subscribe((especialidads: IEspecialidad[]) => (this.especialidadsSharedCollection = especialidads));
+      .subscribe((especialidades: IEspecialidad[]) => {
+        this.especialidadesSharedCollection = especialidades;
+        this.especialidadesCollection =especialidades;
+      });
+  }
+
+  protected buscarEspecialidad($event: { query: string; }): void {
+    this.especialidadesCollection = this.especialidadesSharedCollection.filter(x => x.nombreEspecialidad?.toLowerCase().includes($event.query.toLowerCase()));
+  }
+
+  protected capturarEspecialidadSeleccionada($event: IEspecialidad | null) : void {
+    this.especialidadSeleccionada = $event;
+    this.editForm.value.especialidad = $event;
+    this.editForm.controls.especialidad.setValue($event);
   }
 }

@@ -62,7 +62,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reporteMercadeoApp.reporte.doctor" for="field_doctor">Doctor</label>
-          <select
+          <!--select
             class="form-control"
             id="field_doctor"
             data-cy="doctor"
@@ -72,12 +72,24 @@
           >
             <option [ngValue]="null"></option>
             <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.nombreDoctor }}</option>
-          </select>
+          </select-->
+          <p-autoComplete
+            class="p-fluid"
+            [(ngModel)]="doctorSeleccionado"
+            [ngModelOptions]="{standalone: true}"
+            id="field_doctor"
+            name="doctor"
+            [suggestions]="doctoresCollection"
+            (completeMethod)="buscarDoctor($event)"
+            [dropdown]="true"
+            field="nombreDoctor"
+            (onSelect)="capturarDoctorSeleccionado($event)"
+          ></p-autoComplete>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reporteMercadeoApp.reporte.centroMedico" for="field_centroMedico">Centro Medico</label>
-          <select
+          <!--select
             class="form-control"
             id="field_centroMedico"
             data-cy="centroMedico"
@@ -89,7 +101,19 @@
             <option [ngValue]="centroMedicoOption" *ngFor="let centroMedicoOption of centroMedicosSharedCollection">
               {{ centroMedicoOption.nombreCentroMedico }}
             </option>
-          </select>
+          </select-->
+          <p-autoComplete
+            class="p-fluid"
+            [(ngModel)]="centroMedicoSeleccionado"
+            [ngModelOptions]="{standalone: true}"
+            id="field_centroMedico"
+            name="centroMedico"
+            [suggestions]="centrosMedicosCollection"
+            (completeMethod)="buscarCentroMedico($event)"
+            [dropdown]="true"
+            field="nombreCentroMedico"
+            (onSelect)="capturarCentroMedicoSeleccionado($event)"
+          ></p-autoComplete>
         </div>
       </div>
 

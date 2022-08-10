@@ -14,6 +14,7 @@ import { IDoctor } from 'app/entities/doctor/doctor.model';
 import { DoctorService } from 'app/entities/doctor/service/doctor.service';
 import { ICentroMedico } from 'app/entities/centro-medico/centro-medico.model';
 import { CentroMedicoService } from 'app/entities/centro-medico/service/centro-medico.service';
+import {IEspecialidad} from "../../especialidad/especialidad.model";
 
 @Component({
   selector: 'jhi-reporte-update',
@@ -25,6 +26,12 @@ export class ReporteUpdateComponent implements OnInit {
 
   doctorsSharedCollection: IDoctor[] = [];
   centroMedicosSharedCollection: ICentroMedico[] = [];
+
+  doctoresCollection: IDoctor[] = [];
+  centrosMedicosCollection: ICentroMedico[] = [];
+
+  doctorSeleccionado: IReporte["doctor"] | null = null;
+  centroMedicoSeleccionado: IReporte["centroMedico"] | null = null;
 
   editForm: ReporteFormGroup = this.reporteFormService.createReporteFormGroup();
 
@@ -106,6 +113,9 @@ export class ReporteUpdateComponent implements OnInit {
     this.reporte = reporte;
     this.reporteFormService.resetForm(this.editForm, reporte);
 
+    this.doctorSeleccionado = this.editForm.value.doctor;
+    this.centroMedicoSeleccionado = this.editForm.value.centroMedico;
+
     this.doctorsSharedCollection = this.doctorService.addDoctorToCollectionIfMissing<IDoctor>(this.doctorsSharedCollection, reporte.doctor);
     this.centroMedicosSharedCollection = this.centroMedicoService.addCentroMedicoToCollectionIfMissing<ICentroMedico>(
       this.centroMedicosSharedCollection,
@@ -118,7 +128,10 @@ export class ReporteUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IDoctor[]>) => res.body ?? []))
       .pipe(map((doctors: IDoctor[]) => this.doctorService.addDoctorToCollectionIfMissing<IDoctor>(doctors, this.reporte?.doctor)))
-      .subscribe((doctors: IDoctor[]) => (this.doctorsSharedCollection = doctors));
+      .subscribe((doctors: IDoctor[]) => {
+        this.doctorsSharedCollection = doctors;
+        this.doctoresCollection = doctors;
+      });
 
     this.centroMedicoService
       .query()
@@ -128,6 +141,29 @@ export class ReporteUpdateComponent implements OnInit {
           this.centroMedicoService.addCentroMedicoToCollectionIfMissing<ICentroMedico>(centroMedicos, this.reporte?.centroMedico)
         )
       )
-      .subscribe((centroMedicos: ICentroMedico[]) => (this.centroMedicosSharedCollection = centroMedicos));
+      .subscribe((centroMedicos: ICentroMedico[]) => {
+        this.centroMedicosSharedCollection = centroMedicos;
+        this.centrosMedicosCollection = centroMedicos;
+      });
+  }
+
+  protected buscarDoctor($event: { query: string; }): void {
+    this.doctoresCollection = this.doctorsSharedCollection.filter(x => x.nombreDoctor?.toLowerCase().includes($event.query.toLowerCase()));
+  }
+
+  protected capturarDoctorSeleccionado($event: IDoctor | null) : void {
+    this.doctorSeleccionado = $event;
+    this.editForm.value.doctor = $event;
+    this.editForm.controls.doctor.setValue($event);
+  }
+
+  protected buscarCentroMedico($event: { query: string; }): void {
+    this.centrosMedicosCollection = this.centroMedicosSharedCollection.filter(x => x.nombreCentroMedico?.toLowerCase().includes($event.query.toLowerCase()));
+  }
+
+  protected capturarCentroMedicoSeleccionado($event: ICentroMedico | null) : void {
+    this.centroMedicoSeleccionado = $event;
+    this.editForm.value.centroMedico = $event;
+    this.editForm.controls.centroMedico.setValue($event);
   }
 }
