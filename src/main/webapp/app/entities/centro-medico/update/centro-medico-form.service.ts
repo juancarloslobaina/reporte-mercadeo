@@ -47,8 +47,6 @@ export class CentroMedicoFormService {
   }
 
   getCentroMedico(form: CentroMedicoFormGroup): ICentroMedico | NewCentroMedico {
-    console.log("formulario");
-    console.log(form);
     return form.getRawValue() as ICentroMedico | NewCentroMedico;
   }
 

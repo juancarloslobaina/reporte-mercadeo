@@ -14,7 +14,6 @@ import { IDoctor } from 'app/entities/doctor/doctor.model';
 import { DoctorService } from 'app/entities/doctor/service/doctor.service';
 import { ICentroMedico } from 'app/entities/centro-medico/centro-medico.model';
 import { CentroMedicoService } from 'app/entities/centro-medico/service/centro-medico.service';
-import {IEspecialidad} from "../../especialidad/especialidad.model";
 
 @Component({
   selector: 'jhi-reporte-update',
