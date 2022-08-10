@@ -14,11 +14,11 @@ import {DataUtils} from 'app/core/util/data-util.service';
 
 import {
   CalendarOptions,
-  CalendarApi,
+  //CalendarApi,
   DateSelectArg,
   EventClickArg,
   EventApi,
-  EventInput,
+  //EventInput,
   defineFullCalendarElement, FullCalendarElement
 } from '@fullcalendar/web-component';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -142,7 +142,7 @@ export class ReporteComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.reportes = dataFromBody;
-    let calendarApi = this.calendarRef?.nativeElement.getApi();
+    const calendarApi = this.calendarRef?.nativeElement.getApi();
     this.reportes.forEach(x => {
       calendarApi?.addEvent({
         id: x.id.toString(),
