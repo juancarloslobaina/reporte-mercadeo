@@ -68,7 +68,7 @@ describe('Doctor Management Update Component', () => {
         especialidadCollection,
         ...additionalEspecialidads.map(expect.objectContaining)
       );
-      expect(comp.especialidadsSharedCollection).toEqual(expectedCollection);
+      expect(comp.especialidadesSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
@@ -79,7 +79,7 @@ describe('Doctor Management Update Component', () => {
       activatedRoute.data = of({ doctor });
       comp.ngOnInit();
 
-      expect(comp.especialidadsSharedCollection).toContain(especialidad);
+      expect(comp.especialidadesSharedCollection).toContain(especialidad);
       expect(comp.doctor).toEqual(doctor);
     });
   });

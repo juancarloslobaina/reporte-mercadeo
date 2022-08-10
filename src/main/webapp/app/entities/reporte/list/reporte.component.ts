@@ -14,11 +14,9 @@ import {DataUtils} from 'app/core/util/data-util.service';
 
 import {
   CalendarOptions,
-  //CalendarApi,
   DateSelectArg,
   EventClickArg,
   EventApi,
-  //EventInput,
   defineFullCalendarElement, FullCalendarElement
 } from '@fullcalendar/web-component';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -67,6 +65,8 @@ export class ReporteComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
+
+  currentEvents: EventApi[] = [];
 
   constructor(
     protected reporteService: ReporteService,
@@ -123,7 +123,7 @@ export class ReporteComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
+  handleDateSelect(selectInfo: DateSelectArg): void {
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
 
@@ -140,15 +140,13 @@ export class ReporteComponent implements OnInit {
     }
   }
 
-  currentEvents: EventApi[] = [];
-
-  handleEventClick(clickInfo: EventClickArg) {
+  handleEventClick(clickInfo: EventClickArg): void{
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove();
     }
   }
 
-  handleEvents(events: EventApi[]) {
+  handleEvents(events: EventApi[]): void {
     this.currentEvents = events;
   }
 
