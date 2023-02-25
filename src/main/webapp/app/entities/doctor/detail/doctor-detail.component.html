@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="doctor">
+      <h2 data-cy="doctorDetailsHeading"><span>Doctor</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ doctor.id }}</span>
+        </dd>
+        <dt><span>Nombre Doctor</span></dt>
+        <dd>
+          <span>{{ doctor.nombreDoctor }}</span>
+        </dd>
+        <dt><span>Correo Personal</span></dt>
+        <dd>
+          <span>{{ doctor.correoPersonal }}</span>
+        </dd>
+        <dt><span>Correo Corporativo</span></dt>
+        <dd>
+          <span>{{ doctor.correoCorporativo }}</span>
+        </dd>
+        <dt><span>Telefono Personal</span></dt>
+        <dd>
+          <span>{{ doctor.telefonoPersonal }}</span>
+        </dd>
+        <dt><span>Telefono Corporativo</span></dt>
+        <dd>
+          <span>{{ doctor.telefonoCorporativo }}</span>
+        </dd>
+        <dt><span>Especialidad</span></dt>
+        <dd>
+          <div *ngIf="doctor.especialidad">
+            <a [routerLink]="['/especialidad', doctor.especialidad.id, 'view']">{{ doctor.especialidad.nombreEspecialidad }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/doctor', doctor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

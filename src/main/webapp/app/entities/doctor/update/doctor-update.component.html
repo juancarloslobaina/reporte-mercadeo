@@ -1,0 +1,146 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-doctor-heading" data-cy="DoctorCreateUpdateHeading">Crear o editar Doctor</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_nombreDoctor">Nombre Doctor</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nombreDoctor"
+            id="field_nombreDoctor"
+            data-cy="nombreDoctor"
+            formControlName="nombreDoctor"
+          />
+          <div
+            *ngIf="editForm.get('nombreDoctor')!.invalid && (editForm.get('nombreDoctor')!.dirty || editForm.get('nombreDoctor')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('nombreDoctor')?.errors?.required"> Este campo es obligatorio. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_correoPersonal">Correo Personal</label>
+          <input
+            type="text"
+            class="form-control"
+            name="correoPersonal"
+            id="field_correoPersonal"
+            data-cy="correoPersonal"
+            formControlName="correoPersonal"
+          />
+          <div
+            *ngIf="
+              editForm.get('correoPersonal')!.invalid && (editForm.get('correoPersonal')!.dirty || editForm.get('correoPersonal')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('correoPersonal')?.errors?.pattern">
+              Este campo debe seguir el patrón Correo Personal.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_correoCorporativo">Correo Corporativo</label>
+          <input
+            type="text"
+            class="form-control"
+            name="correoCorporativo"
+            id="field_correoCorporativo"
+            data-cy="correoCorporativo"
+            formControlName="correoCorporativo"
+          />
+          <div
+            *ngIf="
+              editForm.get('correoCorporativo')!.invalid &&
+              (editForm.get('correoCorporativo')!.dirty || editForm.get('correoCorporativo')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('correoCorporativo')?.errors?.required">
+              Este campo es obligatorio.
+            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('correoCorporativo')?.errors?.pattern">
+              Este campo debe seguir el patrón Correo Corporativo.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_telefonoPersonal">Telefono Personal</label>
+          <input
+            type="text"
+            class="form-control"
+            name="telefonoPersonal"
+            id="field_telefonoPersonal"
+            data-cy="telefonoPersonal"
+            formControlName="telefonoPersonal"
+          />
+          <div
+            *ngIf="
+              editForm.get('telefonoPersonal')!.invalid &&
+              (editForm.get('telefonoPersonal')!.dirty || editForm.get('telefonoPersonal')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('telefonoPersonal')?.errors?.required">
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_telefonoCorporativo">Telefono Corporativo</label>
+          <input
+            type="text"
+            class="form-control"
+            name="telefonoCorporativo"
+            id="field_telefonoCorporativo"
+            data-cy="telefonoCorporativo"
+            formControlName="telefonoCorporativo"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_especialidad">Especialidad</label>
+          <select
+            class="form-control"
+            id="field_especialidad"
+            data-cy="especialidad"
+            name="especialidad"
+            formControlName="especialidad"
+            [compareWith]="compareEspecialidad"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="especialidadOption" *ngFor="let especialidadOption of especialidadsSharedCollection">
+              {{ especialidadOption.nombreEspecialidad }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

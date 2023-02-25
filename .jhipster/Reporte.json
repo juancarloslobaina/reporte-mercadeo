@@ -1,0 +1,40 @@
+{
+  "applications": "*",
+  "changelogDate": "20230225154142",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "reporte",
+  "fields": [
+    {
+      "fieldName": "descripcion",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fecha",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Reporte",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "nombreCentroMedico",
+      "otherEntityName": "centroMedico",
+      "relationshipName": "centroMedico",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nombreDoctor",
+      "otherEntityName": "doctor",
+      "relationshipName": "doctor",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -1,0 +1,99 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-reporte-heading" data-cy="ReporteCreateUpdateHeading">Crear o editar Reporte</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_descripcion">Descripcion</label>
+          <textarea
+            class="form-control"
+            name="descripcion"
+            id="field_descripcion"
+            data-cy="descripcion"
+            formControlName="descripcion"
+          ></textarea>
+          <div *ngIf="editForm.get('descripcion')!.invalid && (editForm.get('descripcion')!.dirty || editForm.get('descripcion')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('descripcion')?.errors?.required"> Este campo es obligatorio. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_fecha">Fecha</label>
+          <div class="d-flex">
+            <input
+              id="field_fecha"
+              data-cy="fecha"
+              type="datetime-local"
+              class="form-control"
+              name="fecha"
+              formControlName="fecha"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('fecha')!.invalid && (editForm.get('fecha')!.dirty || editForm.get('fecha')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('fecha')?.errors?.required"> Este campo es obligatorio. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('fecha')?.errors?.datetimelocal">
+              Este campo debe ser una fecha y hora.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_centroMedico">Centro Medico</label>
+          <select
+            class="form-control"
+            id="field_centroMedico"
+            data-cy="centroMedico"
+            name="centroMedico"
+            formControlName="centroMedico"
+            [compareWith]="compareCentroMedico"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="centroMedicoOption" *ngFor="let centroMedicoOption of centroMedicosSharedCollection">
+              {{ centroMedicoOption.nombreCentroMedico }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_doctor">Doctor</label>
+          <select
+            class="form-control"
+            id="field_doctor"
+            data-cy="doctor"
+            name="doctor"
+            formControlName="doctor"
+            [compareWith]="compareDoctor"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.nombreDoctor }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
