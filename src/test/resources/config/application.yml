@@ -13,9 +13,19 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+eureka:
+  client:
+    enabled: false
+  instance:
+    appname: reportemercadeo
+    instanceId: reportemercadeo:${spring.application.instance-id:${random.value}}
+
 spring:
   application:
-    name: ReporteMercadeo
+    name: reportemercadeo
+  cloud:
+    config:
+      enabled: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -26,20 +36,17 @@ spring:
     host: localhost
   main:
     allow-bean-definition-overriding: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   messages:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: reporte-mercadeo-task-
+      thread-name-prefix: reportemercadeo-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: reporte-mercadeo-scheduling-
+      thread-name-prefix: reportemercadeo-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -56,9 +63,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'reporteMercadeoApp'
+    name: 'reportemercadeoApp'
   mail:
-    from: ReporteMercadeo@localhost.com
+    from: reportemercadeo@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -72,7 +79,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: M2Y3NTdlODVhZTA2YzMxNDZlZTA2ZGE0ODczODBmNmU3MjkyOWM3MjYxZDA3YWU5Y2M1YWEzNGE1MDU1OTlhMjkzYWU2ZjVhOTFhMzNlYzQwYWZhMjdmMDJmYWJiYjkxOGEyN2ZhYzZhYzYzM2I1OTdhZmQwNjQ3MGJmNWI1ZDk=
+        base64-secret: M2VhOGFlMmY5MGQ0NDIwZGQ5Mjg5MjNiYWQ0MTgwNTUxMTkyMDM4M2I1ZWQ1MGZmNTZjMzE2ZDEwYzMzZWVlOGQyYTQ3NTE3MWU5YjU2MTRmOTBiZDUxNzNhYzQyOGZmMWI1MWVlOWY1YTViMTU5NWVmNjA1MmFiZWVkMmE0YmI=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 

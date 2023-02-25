@@ -8,14 +8,14 @@ entity Especialidad {
 }
 
 entity CentroMedico {
-	nombreCentroMedico String required	
+	nombreCentroMedico String required
 }
 
 entity Doctor {
-	nombreDoctor String required,    
-    correoPersonal String,
-    correoCorporativo String,
-    telefonoPersonal String,
+	nombreDoctor String required,
+    correoPersonal  String (/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    correoCorporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    telefonoPersonal String required,
     telefonoCorporativo String
 }
 
@@ -24,27 +24,23 @@ entity Reporte {
 	fecha Instant required
 }
 
-relationship OneToOne {
-	Reporte{doctor(nombreDoctor)} to Doctor,
+relationship ManyToOne {
     Reporte{centroMedico(nombreCentroMedico)} to CentroMedico,
-}
-
-relationship OneToOne {
-	Doctor{especialidad(nombreEspecialidad)} to Especialidad
-}
-
-relationship OneToOne {
-	CentroMedico{ciudad(nombreCiudad)} to Ciudad
+    Reporte{doctor(nombreDoctor)} to Doctor,
+    Doctor{especialidad(nombreEspecialidad)} to Especialidad
+    CentroMedico{ciudad(nombreCiudad)} to Ciudad
 }
 
 // Set pagination options
-paginate Reporte, Doctor, Especialidad, CentroMedico, Ciudad with pagination
+//paginate Reporte, Doctor, Especialidad, CentroMedico, Ciudad with pagination
 
 // Use Data Transfer Objects (DTO)
-dto * with mapstruct
+//dto * with mapstruct
 
 // Set service options to all except few
-service all with serviceImpl
+//service * with serviceImpl
 
 // Set an angular suffix
 // angularSuffix * with mySuffix
+
+use mapstruct, serviceImpl, pagination for *

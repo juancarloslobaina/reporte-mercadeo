@@ -24,6 +24,30 @@ springdoc:
   api-docs:
     enabled: false
 ---
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
+  instance:
+    appname: reportemercadeo
+    instanceId: reportemercadeo:${spring.application.instance-id:${random.value}}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+    status-page-url-path: ${management.endpoints.web.base-path}/info
+    health-check-url-path: ${management.endpoints.web.base-path}/health
+    metadata-map:
+      zone: primary # This is needed for the load balancer
+      profile: ${spring.profiles.active}
+      version: #project.version#
+      git-version: ${git.commit.id.describe:}
+      git-commit: ${git.commit.id.abbrev:}
+      git-branch: ${git.branch:}
+      context-path: ${server.servlet.context-path:}
 management:
   endpoints:
     web:
@@ -41,7 +65,6 @@ management:
             'loggers',
             'prometheus',
             'threaddump',
-            'caches',
             'liquibase',
           ]
   endpoint:
@@ -92,7 +115,7 @@ management:
 
 spring:
   application:
-    name: ReporteMercadeo
+    name: reportemercadeo
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file
@@ -106,46 +129,19 @@ spring:
         #- tls
   jmx:
     enabled: false
-  data:
-    jpa:
-      repositories:
-        bootstrap-mode: deferred
-  jpa:
-    open-in-view: false
-    properties:
-      hibernate.jdbc.time_zone: UTC
-      hibernate.id.new_generator_mappings: true
-      hibernate.connection.provider_disables_autocommit: true
-      hibernate.cache.use_second_level_cache: false
-      hibernate.cache.use_query_cache: false
-      hibernate.generate_statistics: false
-      # modify batch size as necessary
-      hibernate.jdbc.batch_size: 25
-      hibernate.order_inserts: true
-      hibernate.order_updates: true
-      hibernate.query.fail_on_pagination_over_collection_fetch: true
-      hibernate.query.in_clause_parameter_padding: true
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
   messages:
     basename: i18n/messages
   main:
     allow-bean-definition-overriding: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   task:
     execution:
-      thread-name-prefix: reporte-mercadeo-task-
+      thread-name-prefix: reportemercadeo-task-
       pool:
         core-size: 2
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: reporte-mercadeo-scheduling-
+      thread-name-prefix: reportemercadeo-scheduling-
       pool:
         size: 2
   thymeleaf:
@@ -176,7 +172,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'reporteMercadeoApp'
+    name: 'reportemercadeoApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #   allowed-origins: "http://localhost:8100,http://localhost:9000"
@@ -186,12 +182,12 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: ReporteMercadeo@localhost
+    from: reportemercadeo@localhost
   api-docs:
     default-include-pattern: ${server.servlet.context-path:}/api/**
     management-include-pattern: ${server.servlet.context-path:}/management/**
-    title: Reporte Mercadeo API
-    description: Reporte Mercadeo API documentation
+    title: Reportemercadeo API
+    description: Reportemercadeo API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:

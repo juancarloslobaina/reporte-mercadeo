@@ -2,11 +2,11 @@
 version: '3.8'
 services:
   reportemercadeo-postgresql:
-    image: postgres:14.4
+    image: postgres:14.5
     # volumes:
-    #   - ~/volumes/jhipster/ReporteMercadeo/postgresql/:/var/lib/postgresql/data/
+    #   - ~/volumes/jhipster/reportemercadeo/postgresql/:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=ReporteMercadeo
+      - POSTGRES_USER=reportemercadeo
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST_AUTH_METHOD=trust
     # If you want to expose these ports outside your dev PC,
