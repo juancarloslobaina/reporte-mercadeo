@@ -13,8 +13,8 @@ entity CentroMedico {
 
 entity Doctor {
 	nombreDoctor String required,
-    correoPersonal  String (/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
-    correoCorporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    correoPersonal String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+    correoCorporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
     telefonoPersonal String required,
     telefonoCorporativo String
 }
