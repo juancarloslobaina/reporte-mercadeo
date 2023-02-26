@@ -110,19 +110,22 @@
 
         <div class="row mb-3">
           <label class="form-label" for="field_especialidad">Especialidad</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_especialidad"
             data-cy="especialidad"
             name="especialidad"
+            field="nombreEspecialidad"
             formControlName="especialidad"
-            [compareWith]="compareEspecialidad"
+            [suggestions]="especialidadsSharedCollection"
+            (completeMethod)="buscarEspecialidad($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="especialidadOption" *ngFor="let especialidadOption of especialidadsSharedCollection">
-              {{ especialidadOption.nombreEspecialidad }}
-            </option>
-          </select>
+            <ng-template let-especialidad pTemplate="item">
+              <div>
+                <div>{{ especialidad.nombreEspecialidad }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
       </div>
 

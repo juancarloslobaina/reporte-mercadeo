@@ -48,34 +48,42 @@
 
         <div class="row mb-3">
           <label class="form-label" for="field_centroMedico">Centro Medico</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_centroMedico"
             data-cy="centroMedico"
             name="centroMedico"
+            field="nombreCentroMedico"
             formControlName="centroMedico"
-            [compareWith]="compareCentroMedico"
+            [suggestions]="centroMedicosSharedCollection"
+            (completeMethod)="buscarCentroMedico($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="centroMedicoOption" *ngFor="let centroMedicoOption of centroMedicosSharedCollection">
-              {{ centroMedicoOption.nombreCentroMedico }}
-            </option>
-          </select>
+            <ng-template let-centroMedico pTemplate="item">
+              <div>
+                <div>{{ centroMedico.nombreCentroMedico }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" for="field_doctor">Doctor</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_doctor"
             data-cy="doctor"
             name="doctor"
+            field="nombreDoctor"
             formControlName="doctor"
-            [compareWith]="compareDoctor"
+            [suggestions]="doctorsSharedCollection"
+            (completeMethod)="buscarDoctor($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.nombreDoctor }}</option>
-          </select>
+            <ng-template let-doctor pTemplate="item">
+              <div>
+                <div>{{ doctor.nombreDoctor }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
       </div>
 

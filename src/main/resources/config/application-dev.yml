@@ -26,7 +26,7 @@ eureka:
   client:
     enabled: false # By default, the JHipster Registry is not used in the "dev" profile
     service-url:
-      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+      defaultZone: http://admin:${jhipster.registry.password}@127.0.0.1:8761/eureka/
 
 management:
   health:
@@ -45,7 +45,7 @@ spring:
       indent-output: true
   cloud:
     config:
-      uri: http://admin:${jhipster.registry.password}@localhost:8761/config
+      uri: http://admin:${jhipster.registry.password}@127.0.0.1:8761/config
       # name of the config server's property source (file.yml) that we want to use
       name: reportemercadeo
       profile: dev
@@ -57,10 +57,10 @@ spring:
       enabled: false
   data:
   elasticsearch:
-    uris: http://localhost:9200
+    uris: http://127.0.0.1:9200
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev, faker
+    contexts: dev
     url: jdbc:h2:file:./target/h2db/db/reportemercadeo;DB_CLOSE_DELAY=-1;MODE=LEGACY
   mail:
     host: localhost
@@ -84,7 +84,7 @@ spring:
     sampler:
       probability: 1 # report 100% of traces
   zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
-    base-url: http://localhost:9411
+    base-url: http://127.0.0.1:9411
     enabled: false
     locator:
       discovery:
@@ -105,7 +105,7 @@ jhipster:
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
-    allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:4200,https://localhost:4200'
+    allowed-origins: 'http://127.0.0.1:8100,https://127.0.0.1:8100,http://127.0.0.1:9000,https://127.0.0.1:9000,http://127.0.0.1:4200,https://127.0.0.1:4200'
     # Enable CORS when running in GitHub Codespaces
     allowed-origin-patterns: 'https://*.githubpreview.dev'
     allowed-methods: '*'

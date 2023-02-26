@@ -7,7 +7,7 @@ import { finalize, map } from 'rxjs/operators';
 import { CentroMedicoFormService, CentroMedicoFormGroup } from './centro-medico-form.service';
 import { ICentroMedico } from '../centro-medico.model';
 import { CentroMedicoService } from '../service/centro-medico.service';
-import { ICiudad } from 'app/entities/ciudad/ciudad.model';
+import { ICiudad, NewCiudad } from 'app/entities/ciudad/ciudad.model';
 import { CiudadService } from 'app/entities/ciudad/service/ciudad.service';
 
 @Component({
@@ -88,6 +88,20 @@ export class CentroMedicoUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.ciudadService
       .query()
+      .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
+      .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centroMedico?.ciudad)))
+      .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));
+  }
+
+  protected buscarCiudad($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: '*' + $event.query + '*',
+      sort: ['id,asc'],
+    };
+    this.ciudadService
+      .search(queryObject)
       .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
       .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centroMedico?.ciudad)))
       .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));

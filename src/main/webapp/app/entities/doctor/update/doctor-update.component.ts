@@ -7,8 +7,9 @@ import { finalize, map } from 'rxjs/operators';
 import { DoctorFormService, DoctorFormGroup } from './doctor-form.service';
 import { IDoctor } from '../doctor.model';
 import { DoctorService } from '../service/doctor.service';
-import { IEspecialidad } from 'app/entities/especialidad/especialidad.model';
+import { IEspecialidad, NewEspecialidad } from 'app/entities/especialidad/especialidad.model';
 import { EspecialidadService } from 'app/entities/especialidad/service/especialidad.service';
+import { ICiudad, NewCiudad } from '../../ciudad/ciudad.model';
 
 @Component({
   selector: 'jhi-doctor-update',
@@ -89,6 +90,24 @@ export class DoctorUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.especialidadService
       .query()
+      .pipe(map((res: HttpResponse<IEspecialidad[]>) => res.body ?? []))
+      .pipe(
+        map((especialidads: IEspecialidad[]) =>
+          this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(especialidads, this.doctor?.especialidad)
+        )
+      )
+      .subscribe((especialidads: IEspecialidad[]) => (this.especialidadsSharedCollection = especialidads));
+  }
+
+  protected buscarEspecialidad($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: '*' + $event.query + '*',
+      sort: ['id,asc'],
+    };
+    this.especialidadService
+      .search(queryObject)
       .pipe(map((res: HttpResponse<IEspecialidad[]>) => res.body ?? []))
       .pipe(
         map((especialidads: IEspecialidad[]) =>

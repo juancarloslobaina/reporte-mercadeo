@@ -14,6 +14,7 @@ import { ICentroMedico } from 'app/entities/centro-medico/centro-medico.model';
 import { CentroMedicoService } from 'app/entities/centro-medico/service/centro-medico.service';
 import { IDoctor } from 'app/entities/doctor/doctor.model';
 import { DoctorService } from 'app/entities/doctor/service/doctor.service';
+import { IEspecialidad } from '../../especialidad/especialidad.model';
 
 @Component({
   selector: 'jhi-reporte-update',
@@ -129,5 +130,37 @@ export class ReporteUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDoctor[]>) => res.body ?? []))
       .pipe(map((doctors: IDoctor[]) => this.doctorService.addDoctorToCollectionIfMissing<IDoctor>(doctors, this.reporte?.doctor)))
       .subscribe((doctors: IDoctor[]) => (this.doctorsSharedCollection = doctors));
+  }
+
+  protected buscarDoctor($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: '*' + $event.query + '*',
+      sort: ['id,asc'],
+    };
+    this.doctorService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IDoctor[]>) => res.body ?? []))
+      .pipe(map((doctors: IDoctor[]) => this.doctorService.addDoctorToCollectionIfMissing<IDoctor>(doctors, this.reporte?.doctor)))
+      .subscribe((doctors: IDoctor[]) => (this.doctorsSharedCollection = doctors));
+  }
+
+  protected buscarCentroMedico($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: '*' + $event.query + '*',
+      sort: ['id,asc'],
+    };
+    this.centroMedicoService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<ICentroMedico[]>) => res.body ?? []))
+      .pipe(
+        map((centroMedicos: ICentroMedico[]) =>
+          this.centroMedicoService.addCentroMedicoToCollectionIfMissing<ICentroMedico>(centroMedicos, this.reporte?.centroMedico)
+        )
+      )
+      .subscribe((centroMedicos: ICentroMedico[]) => (this.centroMedicosSharedCollection = centroMedicos));
   }
 }

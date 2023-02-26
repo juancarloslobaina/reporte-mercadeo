@@ -5,9 +5,10 @@ import { CentroMedicoDetailComponent } from './detail/centro-medico-detail.compo
 import { CentroMedicoUpdateComponent } from './update/centro-medico-update.component';
 import { CentroMedicoDeleteDialogComponent } from './delete/centro-medico-delete-dialog.component';
 import { CentroMedicoRoutingModule } from './route/centro-medico-routing.module';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
-  imports: [SharedModule, CentroMedicoRoutingModule],
+  imports: [SharedModule, CentroMedicoRoutingModule, AutoCompleteModule],
   declarations: [CentroMedicoComponent, CentroMedicoDetailComponent, CentroMedicoUpdateComponent, CentroMedicoDeleteDialogComponent],
 })
 export class CentroMedicoModule {}

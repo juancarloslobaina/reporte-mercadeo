@@ -35,17 +35,22 @@
 
         <div class="row mb-3">
           <label class="form-label" for="field_ciudad">Ciudad</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_ciudad"
             data-cy="ciudad"
             name="ciudad"
+            field="nombreCiudad"
             formControlName="ciudad"
-            [compareWith]="compareCiudad"
+            [suggestions]="ciudadsSharedCollection"
+            (completeMethod)="buscarCiudad($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="ciudadOption" *ngFor="let ciudadOption of ciudadsSharedCollection">{{ ciudadOption.nombreCiudad }}</option>
-          </select>
+            <ng-template let-ciudad pTemplate="item">
+              <div>
+                <div>{{ ciudad.nombreCiudad }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
       </div>
 
