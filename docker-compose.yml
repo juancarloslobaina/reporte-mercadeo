@@ -1,0 +1,100 @@
+services:
+  #reportemercadeo:
+  #  image: reportemercadeo
+  #  environment:
+  #    - _JAVA_OPTIONS=-Xmx512m -Xms256m
+  #    - SPRING_PROFILES_ACTIVE=prod,api-docs
+  #   - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+  #   - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+  #   - SPRING_R2DBC_URL=r2dbc:postgresql://reportemercadeo-postgresql:5432/reportemercadeo
+  #   - SPRING_LIQUIBASE_URL=jdbc:postgresql://reportemercadeo-postgresql:5432/reportemercadeo
+  #    - JHIPSTER_SLEEP=30
+  #    - SPRING_ELASTICSEARCH_URIS=http://reportemercadeo-elasticsearch:9200
+  #    - JHIPSTER_LOGGING_LOGSTASH_ENABLED=false
+  #    - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+  #    - JHIPSTER_REGISTRY_PASSWORD=admin
+  #  ports:
+  #    - '8080:8080'
+
+  reportemercadeo-postgresql:
+    image: postgres:14.5
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=reportemercadeo
+      - POSTGRES_PASSWORD=
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+
+  reportemercadeo-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - '9200:9200'
+
+  jhipster-registry:
+    image: jhipster/jhipster-registry:v7.3.0
+    volumes:
+      - ./central-server-config:/central-config
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_SECURITY_USER_PASSWORD=admin
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+    ports:
+      - 8761:8761
+
+  prometheus:
+    image: prom/prometheus:v2.38.0
+    volumes:
+      - ./prometheus-conf/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+  alertmanager:
+    image: prom/alertmanager:v0.24.0
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager-conf/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  grafana:
+    image: grafana/grafana:9.1.0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana-conf/provisioning/:/etc/grafana/provisioning/
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+  postgresql_data: {}

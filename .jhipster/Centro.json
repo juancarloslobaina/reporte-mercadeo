@@ -1,0 +1,28 @@
+{
+  "applications": ["reportemercadeo"],
+  "changelogDate": "20230227130720",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "centro",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Centro",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "ciudad",
+      "relationshipName": "ciudad",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

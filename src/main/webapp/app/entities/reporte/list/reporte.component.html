@@ -1,0 +1,135 @@
+<div>
+  <h2 id="page-heading" data-cy="ReporteHeading">
+    <span jhiTranslate="reportemercadeoApp.reporte.home.title">Reportes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="reportemercadeoApp.reporte.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-reporte"
+        [routerLink]="['/reporte/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="reportemercadeoApp.reporte.home.createLabel"> Crear nuevo Reporte </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="reportes?.length === 0">
+    <span jhiTranslate="reportemercadeoApp.reporte.home.notFound">Ningún Reportes encontrado</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="reportes && reportes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="descripcion">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.reporte.descripcion">Descripcion</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="fecha">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.reporte.fecha">Fecha</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="centro.nombre">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.reporte.centro">Centro</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="doctor.nombre">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.reporte.doctor">Doctor</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reporte of reportes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/reporte', reporte.id, 'view']">{{ reporte.id }}</a>
+          </td>
+          <td>{{ reporte.descripcion }}</td>
+          <td>{{ reporte.fecha | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="reporte.centro">
+              <a [routerLink]="['/centro', reporte.centro.id, 'view']">{{ reporte.centro.nombre }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="reporte.doctor">
+              <a [routerLink]="['/doctor', reporte.doctor.id, 'view']">{{ reporte.doctor.nombre }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/reporte', reporte.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/reporte', reporte.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+              </button>
+
+              <button type="submit" (click)="delete(reporte)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="reportes && reportes.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

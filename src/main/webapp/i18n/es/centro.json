@@ -1,0 +1,25 @@
+{
+  "reportemercadeoApp": {
+    "centro": {
+      "home": {
+        "title": "Centros",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Centro",
+        "createOrEditLabel": "Crear o editar Centro",
+        "notFound": "Ningún Centros encontrado"
+      },
+      "created": "Un nuevo Centro ha sido creado con el identificador {{ param }}",
+      "updated": "Un Centro ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Centro ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Centro {{ id }}?"
+      },
+      "detail": {
+        "title": "Centro"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "ciudad": "Ciudad"
+    }
+  }
+}

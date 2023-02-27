@@ -1,0 +1,13 @@
+route:
+  receiver: 'webhook'
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 2h
+
+receivers:
+  - name: 'webhook'
+    webhook_configs:
+      # For testing, create a sample alerting webhook at http://webhook.site/
+      - url: 'https://webhook.site/22c38611-920c-44fc-a4e9-858cf2284ba9'
+        send_resolved: true

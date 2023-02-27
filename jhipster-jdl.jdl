@@ -1,0 +1,52 @@
+application {
+  config {
+    baseName reportemercadeo
+    packageName com.labreferencia
+    authenticationType jwt
+    prodDatabaseType postgresql
+    buildTool maven
+    clientFramework angular
+    cacheProvider ehcache
+    databaseType sql
+    nativeLanguage es
+    languages [en, es]
+    applicationType monolith
+    reactive false
+  }
+  entities *
+}
+
+
+entity Ciudad {
+  nombre String required
+}
+
+entity Especialidad {
+  descripcion String required
+}
+
+entity Centro {
+  nombre String required
+}
+
+entity Doctor {
+  nombre String required,
+  correoPersonal String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+  correoCorporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+  telefonoPersonal String,
+  telefonoCorporativo String required
+}
+
+entity Reporte {
+  descripcion TextBlob required,
+  fecha Instant required
+}
+
+relationship ManyToOne {
+  Reporte{centro(nombre)} to Centro,
+  Reporte{doctor(nombre)} to Doctor,
+  Doctor{especialidad(descripcion)} to Especialidad
+  Centro{ciudad(nombre)} to Ciudad
+}
+
+use mapstruct, serviceImpl, pagination for *
