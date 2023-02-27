@@ -1,34 +1,51 @@
-
-entity Ciudad {
-	nombreCiudad String required
+application {
+    config {
+        baseName reporte
+        packageName com.labreferencia
+        authenticationType jwt
+        prodDatabaseType postgresql
+        buildTool maven
+        clientFramework angular
+        cacheProvider ehcache
+        serviceDiscoveryType eureka
+        databaseType sql
+        nativeLanguage es
+        languages [en, es]
+    }
+    entities *
 }
 
-entity Especialidad {
-	nombreEspecialidad String required
+
+entity ciudad {
+	nombre String required
 }
 
-entity CentroMedico {
-	nombreCentroMedico String required
+entity especialidad {
+	nombre String required
 }
 
-entity Doctor {
-	nombreDoctor String required,
-    correoPersonal String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
-    correoCorporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
-    telefonoPersonal String,
-    telefonoCorporativo String required
+entity centro {
+	nombre String required
 }
 
-entity Reporte {
+entity doctor {
+	nombre String required,
+    correo String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+    correo_corporativo String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+    telefono_personal String,
+    telefono_corporativo String required
+}
+
+entity reporte {
 	descripcion TextBlob required,
 	fecha Instant required
 }
 
 relationship ManyToOne {
-    Reporte{centroMedico(nombreCentroMedico)} to CentroMedico,
-    Reporte{doctor(nombreDoctor)} to Doctor,
-    Doctor{especialidad(nombreEspecialidad)} to Especialidad
-    CentroMedico{ciudad(nombreCiudad)} to Ciudad
+    reporte{centro(nombre)} to centro,
+    reporte{doctor(nombre)} to doctor,
+    doctor{especialidad(nombre)} to especialidad
+    centro{ciudad(nombre)} to ciudad
 }
 
 // Set pagination options
