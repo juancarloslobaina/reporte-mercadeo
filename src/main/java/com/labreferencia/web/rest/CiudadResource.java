@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -76,13 +75,12 @@ public class CiudadResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ciudadDTO,
      * or with status {@code 400 (Bad Request)} if the ciudadDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ciudadDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ciudads/{id}")
     public ResponseEntity<CiudadDTO> updateCiudad(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody CiudadDTO ciudadDTO
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to update Ciudad : {}, {}", id, ciudadDTO);
         if (ciudadDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -111,13 +109,12 @@ public class CiudadResource {
      * or with status {@code 400 (Bad Request)} if the ciudadDTO is not valid,
      * or with status {@code 404 (Not Found)} if the ciudadDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the ciudadDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/ciudads/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<CiudadDTO> partialUpdateCiudad(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody CiudadDTO ciudadDTO
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to partial update Ciudad partially : {}, {}", id, ciudadDTO);
         if (ciudadDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -141,13 +138,19 @@ public class CiudadResource {
     /**
      * {@code GET  /ciudads} : get all the ciudads.
      *
+     * @param query the query of the ciudad search.
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ciudads in body.
      */
     @GetMapping("/ciudads")
-    public ResponseEntity<List<CiudadDTO>> getAllCiudads(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<CiudadDTO>> getAllCiudads(
+        @RequestParam Optional<String> query,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
         log.debug("REST request to get a page of Ciudads");
-        Page<CiudadDTO> page = ciudadService.findAll(pageable);
+        Page<CiudadDTO> page = query.isPresent()
+            ? ciudadService.findAllByNombreContains(query.get(), pageable)
+            : ciudadService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

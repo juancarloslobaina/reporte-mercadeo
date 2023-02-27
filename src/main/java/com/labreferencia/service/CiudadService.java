@@ -42,6 +42,14 @@ public interface CiudadService {
     Page<CiudadDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the ciudads by nombre.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<CiudadDTO> findAllByNombreContains(String query, Pageable pageable);
+
+    /**
      * Get the "id" ciudad.
      *
      * @param id the id of the entity.

@@ -71,6 +71,13 @@ public class CiudadServiceImpl implements CiudadService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<CiudadDTO> findAllByNombreContains(String query, Pageable pageable) {
+        log.debug("Request to get all Ciudads");
+        return ciudadRepository.findAllByNombreContains(query, pageable).map(ciudadMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<CiudadDTO> findOne(Long id) {
         log.debug("Request to get Ciudad : {}", id);
         return ciudadRepository.findById(id).map(ciudadMapper::toDto);

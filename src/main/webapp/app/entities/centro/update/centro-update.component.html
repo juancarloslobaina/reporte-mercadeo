@@ -25,17 +25,23 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reportemercadeoApp.centro.ciudad" for="field_ciudad">Ciudad</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_ciudad"
             data-cy="ciudad"
             name="ciudad"
+            field="nombre"
             formControlName="ciudad"
-            [compareWith]="compareCiudad"
+            [suggestions]="ciudadsSharedCollection"
+            (completeMethod)="buscarCiudad($event)"
+            (onDropdownClick)="buscarCiudad($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="ciudadOption" *ngFor="let ciudadOption of ciudadsSharedCollection">{{ ciudadOption.nombre }}</option>
-          </select>
+            <ng-template let-ciudad pTemplate="item">
+              <div>
+                <div>{{ ciudad.nombre }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICiudad, NewCiudad } from '../ciudad.model';
+import { SearchWithPagination } from '../../../core/request/request.model';
 
 export type PartialUpdateCiudad = Partial<ICiudad> & Pick<ICiudad, 'id'>;
 
@@ -35,6 +36,11 @@ export class CiudadService {
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ICiudad[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ICiudad[]>(this.resourceUrl, { params: options, observe: 'response' });
   }

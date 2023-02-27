@@ -72,6 +72,8 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/animations": "14.2.0",
+    "@angular/cdk": "^14.2.7",
     "@angular/common": "14.2.0",
     "@angular/compiler": "14.2.0",
     "@angular/core": "14.2.0",
@@ -91,6 +93,8 @@
     "dayjs": "1.11.5",
     "ngx-infinite-scroll": "14.0.0",
     "ngx-webstorage": "10.0.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^14.2.3",
     "rxjs": "7.5.6",
     "tslib": "2.4.0",
     "zone.js": "0.11.6"
