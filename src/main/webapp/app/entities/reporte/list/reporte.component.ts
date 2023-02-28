@@ -4,7 +4,7 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IReporte } from '../reporte.model';
+import { IReporte, NewReporte } from '../reporte.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
@@ -65,6 +65,21 @@ export class ReporteComponent implements OnInit {
       });
   }
 
+  duplicate(reporte: IReporte): void {
+    const newReporte: NewReporte = {
+      descripcion: reporte.descripcion,
+      fecha: reporte.fecha,
+      centro: reporte.centro,
+      doctor: reporte.doctor,
+      id: null,
+    };
+    this.reporteService.create(newReporte).subscribe(resp => {
+      this.router.navigate(['/reporte', resp.body?.id, 'edit'], {
+        relativeTo: this.activatedRoute,
+      });
+    });
+  }
+
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -98,8 +113,7 @@ export class ReporteComponent implements OnInit {
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.reportes = dataFromBody;
+    this.reportes = this.fillComponentAttributesFromResponseBody(response.body);
   }
 
   protected fillComponentAttributesFromResponseBody(data: IReporte[] | null): IReporte[] {

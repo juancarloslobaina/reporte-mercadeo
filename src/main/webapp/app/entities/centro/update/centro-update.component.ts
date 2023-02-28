@@ -56,6 +56,20 @@ export class CentroUpdateComponent implements OnInit {
     }
   }
 
+  buscarCiudad($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: $event.query,
+      sort: ['id,asc'],
+    };
+    this.ciudadService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
+      .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centro?.ciudad)))
+      .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICentro>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -85,20 +99,6 @@ export class CentroUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.ciudadService
       .query()
-      .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
-      .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centro?.ciudad)))
-      .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));
-  }
-
-  buscarCiudad($event: any): void {
-    const queryObject: any = {
-      page: 0,
-      size: 20,
-      query: $event.query,
-      sort: ['id,asc'],
-    };
-    this.ciudadService
-      .search(queryObject)
       .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
       .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centro?.ciudad)))
       .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));

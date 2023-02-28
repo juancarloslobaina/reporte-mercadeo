@@ -104,6 +104,11 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
               </button>
 
+              <button type="submit" (click)="duplicate(reporte)" class="btn btn-success btn-sm" data-cy="entityDuplicateButton">
+                <fa-icon icon="database"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.duplicate">Duplicar</span>
+              </button>
+
               <button type="submit" (click)="delete(reporte)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
