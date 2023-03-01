@@ -80,11 +80,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     const queryObject: any = {
       page: 0,
       size: 20,
-      query: 'fechaIni:' + dayjs(firstDay.toString()).format(DATE_FORMAT) + 'fechaFin:' + dayjs(lastDay.toString()).format(DATE_FORMAT),
+      query: 'fecha>=' + dayjs(firstDay.toString()).toISOString() + ',fecha<=' + dayjs(lastDay.toString()).toISOString(),
       sort: ['id,asc'],
     };
     this.reporteService
-      .searchBetweenFecha(queryObject)
+      .search(queryObject)
       .pipe(map((res: HttpResponse<IReporte[]>) => res.body ?? []))
       .pipe(
         map(events =>

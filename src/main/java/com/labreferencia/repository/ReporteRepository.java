@@ -1,7 +1,6 @@
 package com.labreferencia.repository;
 
 import com.labreferencia.domain.Reporte;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the Reporte entity.
  */
 @Repository
-public interface ReporteRepository extends JpaRepository<Reporte, Long> {
+public interface ReporteRepository extends JpaRepository<Reporte, Long>, JpaSpecificationExecutor<Reporte> {
     default Optional<Reporte> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
@@ -38,6 +37,4 @@ public interface ReporteRepository extends JpaRepository<Reporte, Long> {
 
     @Query("select reporte from Reporte reporte left join fetch reporte.centro left join fetch reporte.doctor where reporte.id =:id")
     Optional<Reporte> findOneWithToOneRelationships(@Param("id") Long id);
-
-    Page<Reporte> findAllByFechaBetween(Instant fecha1, Instant fecha2, Pageable pageable);
 }

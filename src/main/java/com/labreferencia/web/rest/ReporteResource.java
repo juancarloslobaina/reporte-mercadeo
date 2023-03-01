@@ -1,6 +1,8 @@
 package com.labreferencia.web.rest;
 
+import com.labreferencia.domain.Reporte;
 import com.labreferencia.repository.ReporteRepository;
+import com.labreferencia.searchspec.GenericSpesification;
 import com.labreferencia.service.ReporteService;
 import com.labreferencia.service.dto.ReporteDTO;
 import com.labreferencia.web.rest.errors.BadRequestAlertException;
@@ -75,7 +77,6 @@ public class ReporteResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated reporteDTO,
      * or with status {@code 400 (Bad Request)} if the reporteDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the reporteDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/reportes/{id}")
     public ResponseEntity<ReporteDTO> updateReporte(
@@ -110,7 +111,6 @@ public class ReporteResource {
      * or with status {@code 400 (Bad Request)} if the reporteDTO is not valid,
      * or with status {@code 404 (Not Found)} if the reporteDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the reporteDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/reportes/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ReporteDTO> partialUpdateReporte(
@@ -140,21 +140,25 @@ public class ReporteResource {
     /**
      * {@code GET  /reportes} : get all the reportes.
      *
+     * @param query the query of the reporte search.
      * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of reportes in body.
      */
     @GetMapping("/reportes")
     public ResponseEntity<List<ReporteDTO>> getAllReportes(
+        @RequestParam Optional<String> query,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
-        log.debug("REST request to get a page of Reportes");
         Page<ReporteDTO> page;
+        log.debug("REST request to get a page of Reportes");
+        GenericSpesification<Reporte> genericSpesification = new GenericSpesification<>();
+        query.ifPresent(genericSpesification::buildSpecificationFrom);
         if (eagerload) {
             page = reporteService.findAllWithEagerRelationships(pageable);
         } else {
-            page = reporteService.findAll(pageable);
+            page = reporteService.findAll(genericSpesification, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

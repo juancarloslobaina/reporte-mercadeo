@@ -5,12 +5,12 @@ import com.labreferencia.repository.ReporteRepository;
 import com.labreferencia.service.ReporteService;
 import com.labreferencia.service.dto.ReporteDTO;
 import com.labreferencia.service.mapper.ReporteMapper;
-import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +70,13 @@ public class ReporteServiceImpl implements ReporteService {
         return reporteRepository.findAll(pageable).map(reporteMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ReporteDTO> findAll(Specification<Reporte> specification, Pageable pageable) {
+        log.debug("Request to get all Reportes");
+        return reporteRepository.findAll(specification, pageable).map(reporteMapper::toDto);
+    }
+
     public Page<ReporteDTO> findAllWithEagerRelationships(Pageable pageable) {
         return reporteRepository.findAllWithEagerRelationships(pageable).map(reporteMapper::toDto);
     }
@@ -85,10 +92,5 @@ public class ReporteServiceImpl implements ReporteService {
     public void delete(Long id) {
         log.debug("Request to delete Reporte : {}", id);
         reporteRepository.deleteById(id);
-    }
-
-    @Override
-    public Page<ReporteDTO> findAllByFechaBetween(Instant fecha1, Instant fecha2, Pageable pageable) {
-        return reporteRepository.findAllByFechaBetween(fecha1, fecha1, pageable).map(reporteMapper::toDto);
     }
 }

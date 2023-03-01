@@ -65,7 +65,7 @@ export class ReporteService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
-  searchBetweenFecha(req: SearchWithPagination): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     console.log(options);
     return this.http

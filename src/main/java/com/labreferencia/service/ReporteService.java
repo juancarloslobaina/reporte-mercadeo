@@ -1,10 +1,11 @@
 package com.labreferencia.service;
 
+import com.labreferencia.domain.Reporte;
 import com.labreferencia.service.dto.ReporteDTO;
-import java.time.Instant;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Service Interface for managing {@link com.labreferencia.domain.Reporte}.
@@ -42,6 +43,8 @@ public interface ReporteService {
      */
     Page<ReporteDTO> findAll(Pageable pageable);
 
+    Page<ReporteDTO> findAll(Specification<Reporte> predicate, Pageable pageable);
+
     /**
      * Get all the reportes with eager load of many-to-many relationships.
      *
@@ -64,6 +67,4 @@ public interface ReporteService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    Page<ReporteDTO> findAllByFechaBetween(Instant fecha1, Instant fecha2, Pageable pageable);
 }
