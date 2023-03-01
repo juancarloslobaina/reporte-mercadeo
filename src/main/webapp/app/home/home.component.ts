@@ -75,8 +75,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       month = date.getMonth();
     let firstDay = new Date(year, month, 1);
     let lastDay = new Date(year, month + 1, 0);
-    console.log(dayjs(firstDay.toString()).format(DATE_FORMAT));
-    console.log(dayjs(lastDay.toString()).format(DATE_FORMAT));
     const queryObject: any = {
       page: 0,
       size: 20,
@@ -99,8 +97,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((data: EventInput[]) => (this.calendarOptions.events = data));
-
-    console.log(this.calendarOptions);
   }
 
   login(): void {
