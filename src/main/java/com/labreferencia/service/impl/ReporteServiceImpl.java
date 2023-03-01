@@ -5,6 +5,7 @@ import com.labreferencia.repository.ReporteRepository;
 import com.labreferencia.service.ReporteService;
 import com.labreferencia.service.dto.ReporteDTO;
 import com.labreferencia.service.mapper.ReporteMapper;
+import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,5 +85,10 @@ public class ReporteServiceImpl implements ReporteService {
     public void delete(Long id) {
         log.debug("Request to delete Reporte : {}", id);
         reporteRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<ReporteDTO> findAllByFechaBetween(Instant fecha1, Instant fecha2, Pageable pageable) {
+        return reporteRepository.findAllByFechaBetween(fecha1, fecha1, pageable).map(reporteMapper::toDto);
     }
 }

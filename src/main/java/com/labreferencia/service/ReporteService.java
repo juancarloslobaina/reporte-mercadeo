@@ -1,6 +1,7 @@
 package com.labreferencia.service;
 
 import com.labreferencia.service.dto.ReporteDTO;
+import java.time.Instant;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,4 +64,6 @@ public interface ReporteService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<ReporteDTO> findAllByFechaBetween(Instant fecha1, Instant fecha2, Pageable pageable);
 }

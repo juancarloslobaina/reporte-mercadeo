@@ -79,6 +79,14 @@ export class ReporteFormService {
     );
   }
 
+  createNewFormFromCalendar(form: ReporteFormGroup, fecha: any): void {
+    form.reset(
+      {
+        fecha: fecha,
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
+    );
+  }
+
   private getFormDefaults(): ReporteFormDefaults {
     const currentTime = dayjs();
 

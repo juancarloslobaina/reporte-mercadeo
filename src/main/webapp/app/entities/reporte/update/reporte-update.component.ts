@@ -43,6 +43,9 @@ export class ReporteUpdateComponent implements OnInit {
   compareDoctor = (o1: IDoctor | null, o2: IDoctor | null): boolean => this.doctorService.compareDoctor(o1, o2);
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(({ fecha }) => {
+      if (fecha) this.reporteFormService.createNewFormFromCalendar(this.editForm, fecha);
+    });
     this.activatedRoute.data.subscribe(({ reporte }) => {
       this.reporte = reporte;
       if (reporte) {
@@ -64,7 +67,12 @@ export class ReporteUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('reportemercadeoApp.error', { ...err, key: 'error.file.' + err.key })),
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('reportemercadeoApp.error', {
+            ...err,
+            key: 'error.file.' + err.key,
+          })
+        ),
     });
   }
 

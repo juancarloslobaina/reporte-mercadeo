@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -82,7 +81,7 @@ public class ReporteResource {
     public ResponseEntity<ReporteDTO> updateReporte(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ReporteDTO reporteDTO
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to update Reporte : {}, {}", id, reporteDTO);
         if (reporteDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -117,7 +116,7 @@ public class ReporteResource {
     public ResponseEntity<ReporteDTO> partialUpdateReporte(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody ReporteDTO reporteDTO
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to partial update Reporte partially : {}, {}", id, reporteDTO);
         if (reporteDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
