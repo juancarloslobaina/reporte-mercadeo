@@ -5,6 +5,10 @@
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "supervisor": {
+        "main": "Supervisor",
+        "informes": "Informes"
+      },
       "entities": {
         "main": "Entities",
         "ciudad": "Ciudad",
