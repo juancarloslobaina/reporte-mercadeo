@@ -48,6 +48,7 @@ public class CacheConfiguration {
             createCache(cm, com.labreferencia.domain.User.class.getName());
             createCache(cm, com.labreferencia.domain.Authority.class.getName());
             createCache(cm, com.labreferencia.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.labreferencia.domain.EntityAuditEvent.class.getName());
             createCache(cm, com.labreferencia.domain.Ciudad.class.getName());
             createCache(cm, com.labreferencia.domain.Especialidad.class.getName());
             createCache(cm, com.labreferencia.domain.Centro.class.getName());

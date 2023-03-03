@@ -11,7 +11,7 @@ import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.JHipsterProperties;
 
 @Configuration
-@Profile({ JHipsterConstants.SPRING_PROFILE_DEVELOPMENT })
+@Profile({ JHipsterConstants.SPRING_PROFILE_PRODUCTION })
 public class StaticResourcesWebConfiguration implements WebMvcConfigurer {
 
     protected static final String[] RESOURCE_LOCATIONS = new String[] {

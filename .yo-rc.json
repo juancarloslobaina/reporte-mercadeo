@@ -4,7 +4,12 @@
     "applicationType": "monolith",
     "authenticationType": "jwt",
     "baseName": "reportemercadeo",
-    "blueprints": [],
+    "blueprints": [
+      {
+        "name": "generator-jhipster-entity-audit",
+        "version": "4.0.0"
+      }
+    ],
     "buildTool": "maven",
     "cacheProvider": "ehcache",
     "clientFramework": "angularX",
@@ -27,10 +32,15 @@
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "YWE5NDVjMmRjN2IyODg3MmM5ODMwMjdlMmI5M2M5NDUyMDg0NWRiMjA1MzZmMmE0MGJhOTJlODQwMTc1MTBmZjE4MGMzOWI0MTEwMjcyMTcyYTU4NGJjMTMwZjhkNmNmNmY2MmUwZmI5NzkyODJhODM3OGVkZDc2MTAyNmUyYzg=",
     "languages": ["es", "en"],
-    "lastLiquibaseTimestamp": 1677714002000,
+    "lastLiquibaseTimestamp": 1677857955000,
     "messageBroker": false,
     "nativeLanguage": "es",
-    "otherModules": [],
+    "otherModules": [
+      {
+        "name": "generator-jhipster-entity-audit",
+        "version": "4.0.0"
+      }
+    ],
     "packageFolder": "com/labreferencia",
     "packageName": "com.labreferencia",
     "pages": [],
@@ -46,5 +56,10 @@
     "testFrameworks": [],
     "websocket": false,
     "withAdminUi": true
+  },
+  "generator-jhipster-entity-audit": {
+    "auditFramework": "custom",
+    "auditPage": true,
+    "entityAuditEventChangelogDate": "20230303153915"
   }
 }
