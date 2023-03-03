@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="reporte">
+      <h2 data-cy="reporteDetailsHeading"><span jhiTranslate="reportemercadeoApp.reporte.detail.title">Reporte</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ reporte.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.reporte.descripcion">Descripcion</span></dt>
+        <dd>
+          <span>{{ reporte.descripcion }}</span>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.reporte.fecha">Fecha</span></dt>
+        <dd>
+          <span>{{ reporte.fecha | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.reporte.centro">Centro</span></dt>
+        <dd>
+          <div *ngIf="reporte.centro">
+            <a [routerLink]="['/centro', reporte.centro.id, 'view']">{{ reporte.centro.nombre }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.reporte.doctor">Doctor</span></dt>
+        <dd>
+          <div *ngIf="reporte.doctor">
+            <a [routerLink]="['/doctor', reporte.doctor.id, 'view']">{{ reporte.doctor.nombre }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.reporte.user">User</span></dt>
+        <dd>
+          <span>{{ reporte.user?.login }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/reporte', reporte.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

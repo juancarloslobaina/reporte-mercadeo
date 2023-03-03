@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="centro">
+      <h2 data-cy="centroDetailsHeading"><span jhiTranslate="reportemercadeoApp.centro.detail.title">Centro</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ centro.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.centro.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ centro.nombre }}</span>
+        </dd>
+        <dt><span jhiTranslate="reportemercadeoApp.centro.ciudad">Ciudad</span></dt>
+        <dd>
+          <div *ngIf="centro.ciudad">
+            <a [routerLink]="['/ciudad', centro.ciudad.id, 'view']">{{ centro.ciudad.nombre }}</a>
+          </div>
+        </dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="reportemercadeoApp.centro.user">User</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <span>{{ centro.user?.login }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/centro', centro.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>
