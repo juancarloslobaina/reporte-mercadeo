@@ -7,6 +7,7 @@ import com.labreferencia.service.criteria.EspecialidadCriteria;
 import com.labreferencia.service.dto.EspecialidadDTO;
 import com.labreferencia.service.mapper.EspecialidadMapper;
 import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -91,6 +92,18 @@ public class EspecialidadQueryService extends QueryService<Especialidad> {
             }
             if (criteria.getDescripcion() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescripcion(), Especialidad_.descripcion));
+            }
+            if (criteria.getCreatedBy() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCreatedBy(), Especialidad_.createdBy));
+            }
+            if (criteria.getCreatedDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedDate(), Especialidad_.createdDate));
+            }
+            if (criteria.getLastModifiedBy() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastModifiedBy(), Especialidad_.lastModifiedBy));
+            }
+            if (criteria.getLastModifiedDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Especialidad_.lastModifiedDate));
             }
         }
         return specification;

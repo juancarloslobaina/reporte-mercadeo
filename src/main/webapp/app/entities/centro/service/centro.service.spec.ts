@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ICentro } from '../centro.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../centro.test-samples';
 
-import { CentroService } from './centro.service';
+import { CentroService, RestCentro } from './centro.service';
 
-const requireRestSample: ICentro = {
+const requireRestSample: RestCentro = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Centro Service', () => {

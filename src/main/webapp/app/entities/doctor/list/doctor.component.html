@@ -70,6 +70,30 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="createdBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.doctor.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.doctor.createdDate">Created Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedBy">Last Modified By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedDate">Last Modified Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="especialidad.descripcion">
             <div class="d-flex">
               <span jhiTranslate="reportemercadeoApp.doctor.especialidad">Especialidad</span>
@@ -95,6 +119,10 @@
           <td>{{ doctor.correoCorporativo }}</td>
           <td>{{ doctor.telefonoPersonal }}</td>
           <td>{{ doctor.telefonoCorporativo }}</td>
+          <td>{{ doctor.createdBy }}</td>
+          <td>{{ doctor.createdDate | formatMediumDatetime }}</td>
+          <td>{{ doctor.lastModifiedBy }}</td>
+          <td>{{ doctor.lastModifiedDate | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="doctor.especialidad">
               <a [routerLink]="['/especialidad', doctor.especialidad.id, 'view']">{{ doctor.especialidad.descripcion }}</a>

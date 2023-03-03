@@ -58,6 +58,30 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="createdBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.centro.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="createdDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.centro.createdDate">Created Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="lastModifiedBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.centro.lastModifiedBy">Last Modified By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="lastModifiedDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.centro.lastModifiedDate">Last Modified Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -72,9 +96,13 @@
               <a [routerLink]="['/ciudad', centro.ciudad.id, 'view']">{{ centro.ciudad.nombre }}</a>
             </div>
           </td>
-          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <td>
             {{ centro.user?.login }}
           </td>
+          <td>{{ centro.createdBy }}</td>
+          <td>{{ centro.createdDate | formatMediumDatetime }}</td>
+          <td>{{ centro.lastModifiedBy }}</td>
+          <td>{{ centro.lastModifiedDate | formatMediumDatetime }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/centro', centro.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

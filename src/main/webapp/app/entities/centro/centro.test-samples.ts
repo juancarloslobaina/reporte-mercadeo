@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { ICentro, NewCentro } from './centro.model';
 
 export const sampleWithRequiredData: ICentro = {
@@ -6,17 +8,22 @@ export const sampleWithRequiredData: ICentro = {
 };
 
 export const sampleWithPartialData: ICentro = {
-  id: 22089,
-  nombre: 'back-end',
+  id: 32799,
+  nombre: 'Granito',
+  lastModifiedBy: 'Cambridgeshire implement',
 };
 
 export const sampleWithFullData: ICentro = {
-  id: 28495,
-  nombre: 'Andalucía',
+  id: 59557,
+  nombre: 'payment éxito',
+  createdBy: 'Hormigon Mesa Respuesta',
+  createdDate: dayjs('2023-03-01T13:17'),
+  lastModifiedBy: 'Amarillo Baleares Salud',
+  lastModifiedDate: dayjs('2023-03-01T10:24'),
 };
 
 export const sampleWithNewData: NewCentro = {
-  nombre: 'SMS Marroquinería',
+  nombre: 'unleash',
   id: null,
 };
 

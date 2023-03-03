@@ -18,7 +18,11 @@
         "title": "Especialidad"
       },
       "id": "ID",
-      "descripcion": "Descripcion"
+      "descripcion": "Descripcion",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
     }
   }
 }

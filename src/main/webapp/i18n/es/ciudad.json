@@ -18,7 +18,11 @@
         "title": "Ciudad"
       },
       "id": "ID",
-      "nombre": "Nombre"
+      "nombre": "Nombre",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
     }
   }
 }

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { IEspecialidad, NewEspecialidad } from './especialidad.model';
 
 export const sampleWithRequiredData: IEspecialidad = {
@@ -6,17 +8,22 @@ export const sampleWithRequiredData: IEspecialidad = {
 };
 
 export const sampleWithPartialData: IEspecialidad = {
-  id: 96568,
-  descripcion: 'Berkshire Bedfordshire',
+  id: 51359,
+  descripcion: 'Mesa Electrónica',
+  createdBy: 'definición',
 };
 
 export const sampleWithFullData: IEspecialidad = {
-  id: 93997,
-  descripcion: 'Teclado',
+  id: 44309,
+  descripcion: 'Savings',
+  createdBy: 'invoice Metal Timor-Leste',
+  createdDate: dayjs('2023-03-01T03:17'),
+  lastModifiedBy: 'Algodón Genérico back-end',
+  lastModifiedDate: dayjs('2023-03-01T00:36'),
 };
 
 export const sampleWithNewData: NewEspecialidad = {
-  descripcion: 'adaptador',
+  descripcion: 'Coordinador Rústico',
   id: null,
 };
 

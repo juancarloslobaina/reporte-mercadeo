@@ -1,6 +1,7 @@
 package com.labreferencia.service.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -26,6 +27,14 @@ public class DoctorDTO implements Serializable {
 
     @NotNull
     private String telefonoCorporativo;
+
+    private String createdBy;
+
+    private Instant createdDate;
+
+    private String lastModifiedBy;
+
+    private Instant lastModifiedDate;
 
     private EspecialidadDTO especialidad;
 
@@ -79,6 +88,38 @@ public class DoctorDTO implements Serializable {
         this.telefonoCorporativo = telefonoCorporativo;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public EspecialidadDTO getEspecialidad() {
         return especialidad;
     }
@@ -126,6 +167,10 @@ public class DoctorDTO implements Serializable {
             ", correoCorporativo='" + getCorreoCorporativo() + "'" +
             ", telefonoPersonal='" + getTelefonoPersonal() + "'" +
             ", telefonoCorporativo='" + getTelefonoCorporativo() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", especialidad=" + getEspecialidad() +
             ", user=" + getUser() +
             "}";

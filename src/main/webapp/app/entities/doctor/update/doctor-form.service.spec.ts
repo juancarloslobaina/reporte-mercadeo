@@ -25,6 +25,10 @@ describe('Doctor Form Service', () => {
             correoCorporativo: expect.any(Object),
             telefonoPersonal: expect.any(Object),
             telefonoCorporativo: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             especialidad: expect.any(Object),
             user: expect.any(Object),
           })
@@ -42,6 +46,10 @@ describe('Doctor Form Service', () => {
             correoCorporativo: expect.any(Object),
             telefonoPersonal: expect.any(Object),
             telefonoCorporativo: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             especialidad: expect.any(Object),
             user: expect.any(Object),
           })

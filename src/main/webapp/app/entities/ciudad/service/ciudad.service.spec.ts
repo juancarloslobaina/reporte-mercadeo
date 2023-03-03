@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ICiudad } from '../ciudad.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../ciudad.test-samples';
 
-import { CiudadService } from './ciudad.service';
+import { CiudadService, RestCiudad } from './ciudad.service';
 
-const requireRestSample: ICiudad = {
+const requireRestSample: RestCiudad = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Ciudad Service', () => {

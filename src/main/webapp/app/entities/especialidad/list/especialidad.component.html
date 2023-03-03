@@ -46,6 +46,30 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="createdBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.especialidad.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.especialidad.createdDate">Created Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedBy">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.especialidad.lastModifiedBy">Last Modified By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedDate">
+            <div class="d-flex">
+              <span jhiTranslate="reportemercadeoApp.especialidad.lastModifiedDate">Last Modified Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -55,6 +79,10 @@
             <a [routerLink]="['/especialidad', especialidad.id, 'view']">{{ especialidad.id }}</a>
           </td>
           <td>{{ especialidad.descripcion }}</td>
+          <td>{{ especialidad.createdBy }}</td>
+          <td>{{ especialidad.createdDate | formatMediumDatetime }}</td>
+          <td>{{ especialidad.lastModifiedBy }}</td>
+          <td>{{ especialidad.lastModifiedDate | formatMediumDatetime }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

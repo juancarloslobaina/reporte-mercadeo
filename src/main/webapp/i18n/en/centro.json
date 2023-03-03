@@ -19,6 +19,10 @@
       },
       "id": "ID",
       "nombre": "Nombre",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "ciudad": "Ciudad",
       "user": "User"
     }

@@ -11,6 +11,8 @@ import com.labreferencia.repository.EspecialidadRepository;
 import com.labreferencia.service.criteria.EspecialidadCriteria;
 import com.labreferencia.service.dto.EspecialidadDTO;
 import com.labreferencia.service.mapper.EspecialidadMapper;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;

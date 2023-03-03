@@ -20,6 +20,10 @@
       "id": "ID",
       "descripcion": "Descripcion",
       "fecha": "Fecha",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "centro": "Centro",
       "doctor": "Doctor",
       "user": "User"

@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IDoctor } from '../doctor.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../doctor.test-samples';
 
-import { DoctorService } from './doctor.service';
+import { DoctorService, RestDoctor } from './doctor.service';
 
-const requireRestSample: IDoctor = {
+const requireRestSample: RestDoctor = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Doctor Service', () => {

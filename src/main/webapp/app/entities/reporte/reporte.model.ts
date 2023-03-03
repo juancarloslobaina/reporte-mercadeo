@@ -7,6 +7,10 @@ export interface IReporte {
   id: number;
   descripcion?: string | null;
   fecha?: dayjs.Dayjs | null;
+  createdBy?: string | null;
+  createdDate?: dayjs.Dayjs | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: dayjs.Dayjs | null;
   centro?: Pick<ICentro, 'id' | 'nombre'> | null;
   doctor?: Pick<IDoctor, 'id' | 'nombre'> | null;
   user?: Pick<IUser, 'id' | 'login'> | null;

@@ -23,6 +23,10 @@
       "correoCorporativo": "Correo Corporativo",
       "telefonoPersonal": "Telefono Personal",
       "telefonoCorporativo": "Telefono Corporativo",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "especialidad": "Especialidad",
       "user": "User"
     }

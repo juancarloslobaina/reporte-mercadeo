@@ -89,7 +89,7 @@ public class CentroResource {
     /**
      * {@code PUT  /centros/:id} : Updates an existing centro.
      *
-     * @param id        the id of the centroDTO to save.
+     * @param id the id of the centroDTO to save.
      * @param centroDTO the centroDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated centroDTO,
      * or with status {@code 400 (Bad Request)} if the centroDTO is not valid,
@@ -114,7 +114,7 @@ public class CentroResource {
     /**
      * {@code PATCH  /centros/:id} : Partial updates given fields of an existing centro, field will ignore if it is null
      *
-     * @param id        the id of the centroDTO to save.
+     * @param id the id of the centroDTO to save.
      * @param centroDTO the centroDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated centroDTO,
      * or with status {@code 400 (Bad Request)} if the centroDTO is not valid,

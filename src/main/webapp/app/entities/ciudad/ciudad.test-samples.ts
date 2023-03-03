@@ -1,3 +1,5 @@
+import dayjs from 'dayjs/esm';
+
 import { ICiudad, NewCiudad } from './ciudad.model';
 
 export const sampleWithRequiredData: ICiudad = {
@@ -6,17 +8,24 @@ export const sampleWithRequiredData: ICiudad = {
 };
 
 export const sampleWithPartialData: ICiudad = {
-  id: 57553,
-  nombre: 'withdrawal Identidad',
+  id: 19181,
+  nombre: 'vertical Electrónica Algodón',
+  createdBy: 'Avenida Somali Rial',
+  createdDate: dayjs('2023-03-01T18:44'),
+  lastModifiedBy: 'Loan TCP',
 };
 
 export const sampleWithFullData: ICiudad = {
-  id: 44049,
-  nombre: 'Queso',
+  id: 67167,
+  nombre: 'Moda wireless Respuesta',
+  createdBy: 'pixel Pescado Consultor',
+  createdDate: dayjs('2023-03-01T22:18'),
+  lastModifiedBy: 'Asistente',
+  lastModifiedDate: dayjs('2023-03-01T16:05'),
 };
 
 export const sampleWithNewData: NewCiudad = {
-  nombre: 'Prolongación online wireless',
+  nombre: 'Librería',
   id: null,
 };
 

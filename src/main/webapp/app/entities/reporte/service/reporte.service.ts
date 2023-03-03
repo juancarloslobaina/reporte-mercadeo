@@ -11,8 +11,10 @@ import { IReporte, NewReporte } from '../reporte.model';
 
 export type PartialUpdateReporte = Partial<IReporte> & Pick<IReporte, 'id'>;
 
-type RestOf<T extends IReporte | NewReporte> = Omit<T, 'fecha'> & {
+type RestOf<T extends IReporte | NewReporte> = Omit<T, 'fecha' | 'createdDate' | 'lastModifiedDate'> & {
   fecha?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 export type RestReporte = RestOf<IReporte>;
@@ -100,6 +102,8 @@ export class ReporteService {
     return {
       ...reporte,
       fecha: reporte.fecha?.toJSON() ?? null,
+      createdDate: reporte.createdDate?.toJSON() ?? null,
+      lastModifiedDate: reporte.lastModifiedDate?.toJSON() ?? null,
     };
   }
 
@@ -107,6 +111,8 @@ export class ReporteService {
     return {
       ...restReporte,
       fecha: restReporte.fecha ? dayjs(restReporte.fecha) : undefined,
+      createdDate: restReporte.createdDate ? dayjs(restReporte.createdDate) : undefined,
+      lastModifiedDate: restReporte.lastModifiedDate ? dayjs(restReporte.lastModifiedDate) : undefined,
     };
   }
 

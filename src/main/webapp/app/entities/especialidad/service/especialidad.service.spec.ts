@@ -4,10 +4,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IEspecialidad } from '../especialidad.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../especialidad.test-samples';
 
-import { EspecialidadService } from './especialidad.service';
+import { EspecialidadService, RestEspecialidad } from './especialidad.service';
 
-const requireRestSample: IEspecialidad = {
+const requireRestSample: RestEspecialidad = {
   ...sampleWithRequiredData,
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Especialidad Service', () => {

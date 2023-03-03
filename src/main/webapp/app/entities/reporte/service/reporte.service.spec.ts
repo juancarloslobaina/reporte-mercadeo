@@ -9,6 +9,8 @@ import { ReporteService, RestReporte } from './reporte.service';
 const requireRestSample: RestReporte = {
   ...sampleWithRequiredData,
   fecha: sampleWithRequiredData.fecha?.toJSON(),
+  createdDate: sampleWithRequiredData.createdDate?.toJSON(),
+  lastModifiedDate: sampleWithRequiredData.lastModifiedDate?.toJSON(),
 };
 
 describe('Reporte Service', () => {

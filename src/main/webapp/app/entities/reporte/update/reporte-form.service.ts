@@ -19,20 +19,26 @@ type ReporteFormGroupInput = IReporte | PartialWithRequiredKeyOf<NewReporte>;
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IReporte | NewReporte> = Omit<T, 'fecha'> & {
+type FormValueOf<T extends IReporte | NewReporte> = Omit<T, 'fecha' | 'createdDate' | 'lastModifiedDate'> & {
   fecha?: string | null;
+  createdDate?: string | null;
+  lastModifiedDate?: string | null;
 };
 
 type ReporteFormRawValue = FormValueOf<IReporte>;
 
 type NewReporteFormRawValue = FormValueOf<NewReporte>;
 
-type ReporteFormDefaults = Pick<NewReporte, 'id' | 'fecha'>;
+type ReporteFormDefaults = Pick<NewReporte, 'id' | 'fecha' | 'createdDate' | 'lastModifiedDate'>;
 
 type ReporteFormGroupContent = {
   id: FormControl<ReporteFormRawValue['id'] | NewReporte['id']>;
   descripcion: FormControl<ReporteFormRawValue['descripcion']>;
   fecha: FormControl<ReporteFormRawValue['fecha']>;
+  createdBy: FormControl<ReporteFormRawValue['createdBy']>;
+  createdDate: FormControl<ReporteFormRawValue['createdDate']>;
+  lastModifiedBy: FormControl<ReporteFormRawValue['lastModifiedBy']>;
+  lastModifiedDate: FormControl<ReporteFormRawValue['lastModifiedDate']>;
   centro: FormControl<ReporteFormRawValue['centro']>;
   doctor: FormControl<ReporteFormRawValue['doctor']>;
   user: FormControl<ReporteFormRawValue['user']>;
@@ -61,6 +67,10 @@ export class ReporteFormService {
       fecha: new FormControl(reporteRawValue.fecha, {
         validators: [Validators.required],
       }),
+      createdBy: new FormControl(reporteRawValue.createdBy),
+      createdDate: new FormControl(reporteRawValue.createdDate),
+      lastModifiedBy: new FormControl(reporteRawValue.lastModifiedBy),
+      lastModifiedDate: new FormControl(reporteRawValue.lastModifiedDate),
       centro: new FormControl(reporteRawValue.centro),
       doctor: new FormControl(reporteRawValue.doctor),
       user: new FormControl(reporteRawValue.user),
@@ -87,6 +97,8 @@ export class ReporteFormService {
     return {
       id: null,
       fecha: currentTime,
+      createdDate: currentTime,
+      lastModifiedDate: currentTime,
     };
   }
 
@@ -94,6 +106,8 @@ export class ReporteFormService {
     return {
       ...rawReporte,
       fecha: dayjs(rawReporte.fecha, DATE_TIME_FORMAT),
+      createdDate: dayjs(rawReporte.createdDate, DATE_TIME_FORMAT),
+      lastModifiedDate: dayjs(rawReporte.lastModifiedDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -103,6 +117,8 @@ export class ReporteFormService {
     return {
       ...reporte,
       fecha: reporte.fecha ? reporte.fecha.format(DATE_TIME_FORMAT) : undefined,
+      createdDate: reporte.createdDate ? reporte.createdDate.format(DATE_TIME_FORMAT) : undefined,
+      lastModifiedDate: reporte.lastModifiedDate ? reporte.lastModifiedDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

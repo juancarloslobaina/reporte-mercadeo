@@ -21,6 +21,10 @@ describe('Centro Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             nombre: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             ciudad: expect.any(Object),
             user: expect.any(Object),
           })
@@ -34,6 +38,10 @@ describe('Centro Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             nombre: expect.any(Object),
+            createdBy: expect.any(Object),
+            createdDate: expect.any(Object),
+            lastModifiedBy: expect.any(Object),
+            lastModifiedDate: expect.any(Object),
             ciudad: expect.any(Object),
             user: expect.any(Object),
           })

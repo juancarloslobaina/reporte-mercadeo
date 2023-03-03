@@ -105,6 +105,18 @@ public class DoctorQueryService extends QueryService<Doctor> {
             if (criteria.getTelefonoCorporativo() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTelefonoCorporativo(), Doctor_.telefonoCorporativo));
             }
+            if (criteria.getCreatedBy() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCreatedBy(), Doctor_.createdBy));
+            }
+            if (criteria.getCreatedDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedDate(), Doctor_.createdDate));
+            }
+            if (criteria.getLastModifiedBy() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastModifiedBy(), Doctor_.lastModifiedBy));
+            }
+            if (criteria.getLastModifiedDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Doctor_.lastModifiedDate));
+            }
             if (criteria.getEspecialidadId() != null) {
                 specification =
                     specification.and(

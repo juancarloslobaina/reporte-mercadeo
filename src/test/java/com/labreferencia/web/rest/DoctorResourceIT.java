@@ -15,6 +15,8 @@ import com.labreferencia.service.DoctorService;
 import com.labreferencia.service.criteria.DoctorCriteria;
 import com.labreferencia.service.dto.DoctorDTO;
 import com.labreferencia.service.mapper.DoctorMapper;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
