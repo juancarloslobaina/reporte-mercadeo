@@ -18,22 +18,24 @@
         <dd>
           <span>{{ ciudad.nombre }}</span>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.ciudad.createdBy">Created By</span></dt>
-        <dd>
-          <span>{{ ciudad.createdBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.ciudad.createdDate">Created Date</span></dt>
-        <dd>
-          <span>{{ ciudad.createdDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.ciudad.lastModifiedBy">Last Modified By</span></dt>
-        <dd>
-          <span>{{ ciudad.lastModifiedBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.ciudad.lastModifiedDate">Last Modified Date</span></dt>
-        <dd>
-          <span>{{ ciudad.lastModifiedDate | formatMediumDatetime }}</span>
-        </dd>
+        <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <dt><span jhiTranslate="reportemercadeoApp.ciudad.createdBy">Created By</span></dt>
+          <dd>
+            <span>{{ ciudad.createdBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.ciudad.createdDate">Created Date</span></dt>
+          <dd>
+            <span>{{ ciudad.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.ciudad.lastModifiedBy">Last Modified By</span></dt>
+          <dd>
+            <span>{{ ciudad.lastModifiedBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.ciudad.lastModifiedDate">Last Modified Date</span></dt>
+          <dd>
+            <span>{{ ciudad.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
+        </ng-container>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

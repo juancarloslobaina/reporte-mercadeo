@@ -70,42 +70,44 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdBy">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.doctor.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="createdDate">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.doctor.createdDate">Created Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedBy">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedBy">Last Modified By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedDate">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedDate">Last Modified Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="especialidad.descripcion">
             <div class="d-flex">
               <span jhiTranslate="reportemercadeoApp.doctor.especialidad">Especialidad</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="user.login">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.doctor.user">User</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.doctor.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.doctor.createdBy">Created By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.doctor.createdDate">Created Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedBy">Last Modified By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.doctor.lastModifiedDate">Last Modified Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+          </ng-container>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -119,18 +121,20 @@
           <td>{{ doctor.correoCorporativo }}</td>
           <td>{{ doctor.telefonoPersonal }}</td>
           <td>{{ doctor.telefonoCorporativo }}</td>
-          <td>{{ doctor.createdBy }}</td>
-          <td>{{ doctor.createdDate | formatMediumDatetime }}</td>
-          <td>{{ doctor.lastModifiedBy }}</td>
-          <td>{{ doctor.lastModifiedDate | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="doctor.especialidad">
               <a [routerLink]="['/especialidad', doctor.especialidad.id, 'view']">{{ doctor.especialidad.descripcion }}</a>
             </div>
           </td>
-          <td>
-            {{ doctor.user?.login }}
-          </td>
+          <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <td>
+              {{ doctor.user?.login }}
+            </td>
+            <td>{{ doctor.createdBy }}</td>
+            <td>{{ doctor.createdDate | formatMediumDatetime }}</td>
+            <td>{{ doctor.lastModifiedBy }}</td>
+            <td>{{ doctor.lastModifiedDate | formatMediumDatetime }}</td>
+          </ng-container>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/doctor', doctor.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

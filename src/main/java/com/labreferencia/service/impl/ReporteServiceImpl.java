@@ -3,6 +3,7 @@ package com.labreferencia.service.impl;
 import com.labreferencia.domain.Reporte;
 import com.labreferencia.repository.ReporteRepository;
 import com.labreferencia.service.ReporteService;
+import com.labreferencia.service.dto.DoctorDTO;
 import com.labreferencia.service.dto.ReporteDTO;
 import com.labreferencia.service.mapper.ReporteMapper;
 import java.util.Optional;
@@ -84,5 +85,11 @@ public class ReporteServiceImpl implements ReporteService {
     public void delete(Long id) {
         log.debug("Request to delete Reporte : {}", id);
         reporteRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<ReporteDTO> findByUserLogin(String currentUsername, Pageable pageable) {
+        log.debug("Request to get all Centros by User : {}", currentUsername);
+        return reporteRepository.findByUserLogin(currentUsername, pageable).map(reporteMapper::toDto);
     }
 }

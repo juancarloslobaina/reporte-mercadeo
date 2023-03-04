@@ -85,4 +85,10 @@ public class DoctorServiceImpl implements DoctorService {
         log.debug("Request to delete Doctor : {}", id);
         doctorRepository.deleteById(id);
     }
+
+    @Override
+    public Page<DoctorDTO> findByUserLogin(String currentUsername, Pageable pageable) {
+        log.debug("Request to get all Centros by User : {}", currentUsername);
+        return doctorRepository.findByUserLogin(currentUsername, pageable).map(doctorMapper::toDto);
+    }
 }

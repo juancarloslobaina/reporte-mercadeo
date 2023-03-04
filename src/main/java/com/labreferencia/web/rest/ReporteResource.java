@@ -1,8 +1,11 @@
 package com.labreferencia.web.rest;
 
 import com.labreferencia.repository.ReporteRepository;
+import com.labreferencia.security.AuthoritiesConstants;
+import com.labreferencia.security.SecurityUtils;
 import com.labreferencia.service.ReporteQueryService;
 import com.labreferencia.service.ReporteService;
+import com.labreferencia.service.UserService;
 import com.labreferencia.service.criteria.ReporteCriteria;
 import com.labreferencia.service.dto.ReporteDTO;
 import com.labreferencia.web.rest.errors.BadRequestAlertException;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,10 +50,18 @@ public class ReporteResource {
 
     private final ReporteQueryService reporteQueryService;
 
-    public ReporteResource(ReporteService reporteService, ReporteRepository reporteRepository, ReporteQueryService reporteQueryService) {
+    private final UserService userService;
+
+    public ReporteResource(
+        ReporteService reporteService,
+        ReporteRepository reporteRepository,
+        ReporteQueryService reporteQueryService,
+        UserService userService
+    ) {
         this.reporteService = reporteService;
         this.reporteRepository = reporteRepository;
         this.reporteQueryService = reporteQueryService;
+        this.userService = userService;
     }
 
     /**
@@ -65,6 +77,8 @@ public class ReporteResource {
         if (reporteDTO.getId() != null) {
             throw new BadRequestAlertException("A new reporte cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (userService.setUserByUserLogin(reporteDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
+
         ReporteDTO result = reporteService.save(reporteDTO);
         return ResponseEntity
             .created(new URI("/api/reportes/" + result.getId()))
@@ -75,7 +89,7 @@ public class ReporteResource {
     /**
      * {@code PUT  /reportes/:id} : Updates an existing reporte.
      *
-     * @param id the id of the reporteDTO to save.
+     * @param id         the id of the reporteDTO to save.
      * @param reporteDTO the reporteDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated reporteDTO,
      * or with status {@code 400 (Bad Request)} if the reporteDTO is not valid,
@@ -88,16 +102,7 @@ public class ReporteResource {
         @Valid @RequestBody ReporteDTO reporteDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Reporte : {}, {}", id, reporteDTO);
-        if (reporteDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, reporteDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!reporteRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
+        if (validateDTOParameters(id, reporteDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
 
         ReporteDTO result = reporteService.update(reporteDTO);
         return ResponseEntity
@@ -109,7 +114,7 @@ public class ReporteResource {
     /**
      * {@code PATCH  /reportes/:id} : Partial updates given fields of an existing reporte, field will ignore if it is null
      *
-     * @param id the id of the reporteDTO to save.
+     * @param id         the id of the reporteDTO to save.
      * @param reporteDTO the reporteDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated reporteDTO,
      * or with status {@code 400 (Bad Request)} if the reporteDTO is not valid,
@@ -123,16 +128,7 @@ public class ReporteResource {
         @NotNull @RequestBody ReporteDTO reporteDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Reporte partially : {}, {}", id, reporteDTO);
-        if (reporteDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, reporteDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!reporteRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
+        if (validateDTOParameters(id, reporteDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
 
         Optional<ReporteDTO> result = reporteService.partialUpdate(reporteDTO);
 
@@ -155,7 +151,12 @@ public class ReporteResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get Reportes by criteria: {}", criteria);
-        Page<ReporteDTO> page = reporteQueryService.findByCriteria(criteria, pageable);
+        Page<ReporteDTO> page;
+        if (SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ADMIN)) {
+            page = reporteService.findByUserLogin(SecurityUtils.getCurrentUserLogin().orElse(null), pageable);
+        } else {
+            page = reporteQueryService.findByCriteria(criteria, pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -182,6 +183,10 @@ public class ReporteResource {
     public ResponseEntity<ReporteDTO> getReporte(@PathVariable Long id) {
         log.debug("REST request to get Reporte : {}", id);
         Optional<ReporteDTO> reporteDTO = reporteService.findOne(id);
+        if (userService.checkUserIsCurrentOrAdministrator(reporteDTO.orElse(null))) return new ResponseEntity(
+            "Unauthorized",
+            HttpStatus.UNAUTHORIZED
+        );
         return ResponseUtil.wrapOrNotFound(reporteDTO);
     }
 
@@ -194,10 +199,30 @@ public class ReporteResource {
     @DeleteMapping("/reportes/{id}")
     public ResponseEntity<Void> deleteReporte(@PathVariable Long id) {
         log.debug("REST request to delete Reporte : {}", id);
+        Optional<ReporteDTO> reporteDTO = reporteService.findOne(id);
+        if (userService.checkUserIsCurrentOrAdministrator(reporteDTO.orElse(null))) return new ResponseEntity(
+            "Unauthorized",
+            HttpStatus.UNAUTHORIZED
+        );
         reporteService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private boolean validateDTOParameters(Long id, ReporteDTO reporteDTO) {
+        if (reporteDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, reporteDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!reporteRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        return (userService.setUserByUserLogin(reporteDTO));
     }
 }

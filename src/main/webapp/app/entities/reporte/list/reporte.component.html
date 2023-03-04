@@ -52,30 +52,6 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdBy">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.reporte.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="createdDate">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.reporte.createdDate">Created Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedBy">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy">Last Modified By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedDate">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate">Last Modified Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="centro.nombre">
             <div class="d-flex">
               <span jhiTranslate="reportemercadeoApp.reporte.centro">Centro</span>
@@ -88,12 +64,38 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="user.login">
-            <div class="d-flex">
-              <span jhiTranslate="reportemercadeoApp.reporte.user">User</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.reporte.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdBy">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.reporte.createdBy">Created By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdDate">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.reporte.createdDate">Created Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedBy">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy">Last Modified By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastModifiedDate">
+              <div class="d-flex">
+                <span jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate">Last Modified Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+          </ng-container>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -104,10 +106,6 @@
           </td>
           <td>{{ reporte.descripcion }}</td>
           <td>{{ reporte.fecha | formatMediumDatetime }}</td>
-          <td>{{ reporte.createdBy }}</td>
-          <td>{{ reporte.createdDate | formatMediumDatetime }}</td>
-          <td>{{ reporte.lastModifiedBy }}</td>
-          <td>{{ reporte.lastModifiedDate | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="reporte.centro">
               <a [routerLink]="['/centro', reporte.centro.id, 'view']">{{ reporte.centro.nombre }}</a>
@@ -118,9 +116,15 @@
               <a [routerLink]="['/doctor', reporte.doctor.id, 'view']">{{ reporte.doctor.nombre }}</a>
             </div>
           </td>
-          <td>
-            {{ reporte.user?.login }}
-          </td>
+          <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <td>
+              {{ reporte.user?.login }}
+            </td>
+            <td>{{ reporte.createdBy }}</td>
+            <td>{{ reporte.createdDate | formatMediumDatetime }}</td>
+            <td>{{ reporte.lastModifiedBy }}</td>
+            <td>{{ reporte.lastModifiedDate | formatMediumDatetime }}</td>
+          </ng-container>
           <td class="text-end">
             <div class="btn-group">
               <button

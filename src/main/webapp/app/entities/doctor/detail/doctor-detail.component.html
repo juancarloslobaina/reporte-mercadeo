@@ -34,32 +34,34 @@
         <dd>
           <span>{{ doctor.telefonoCorporativo }}</span>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.doctor.createdBy">Created By</span></dt>
-        <dd>
-          <span>{{ doctor.createdBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.doctor.createdDate">Created Date</span></dt>
-        <dd>
-          <span>{{ doctor.createdDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.doctor.lastModifiedBy">Last Modified By</span></dt>
-        <dd>
-          <span>{{ doctor.lastModifiedBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.doctor.lastModifiedDate">Last Modified Date</span></dt>
-        <dd>
-          <span>{{ doctor.lastModifiedDate | formatMediumDatetime }}</span>
-        </dd>
         <dt><span jhiTranslate="reportemercadeoApp.doctor.especialidad">Especialidad</span></dt>
         <dd>
           <div *ngIf="doctor.especialidad">
             <a [routerLink]="['/especialidad', doctor.especialidad.id, 'view']">{{ doctor.especialidad.descripcion }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.doctor.user">User</span></dt>
-        <dd>
-          <span>{{ doctor.user?.login }}</span>
-        </dd>
+        <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <dt><span jhiTranslate="reportemercadeoApp.doctor.user">User</span></dt>
+          <dd>
+            <span>{{ doctor.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.doctor.createdBy">Created By</span></dt>
+          <dd>
+            <span>{{ doctor.createdBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.doctor.createdDate">Created Date</span></dt>
+          <dd>
+            <span>{{ doctor.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.doctor.lastModifiedBy">Last Modified By</span></dt>
+          <dd>
+            <span>{{ doctor.lastModifiedBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.doctor.lastModifiedDate">Last Modified Date</span></dt>
+          <dd>
+            <span>{{ doctor.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
+        </ng-container>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

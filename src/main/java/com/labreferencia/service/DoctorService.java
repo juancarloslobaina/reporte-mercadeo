@@ -63,4 +63,6 @@ public interface DoctorService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<DoctorDTO> findByUserLogin(String currentUsername, Pageable pageable);
 }

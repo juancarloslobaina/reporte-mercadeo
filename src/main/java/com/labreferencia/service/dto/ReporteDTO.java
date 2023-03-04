@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
  * A DTO for the {@link com.labreferencia.domain.Reporte} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ReporteDTO implements Serializable {
+public class ReporteDTO implements Serializable, UserLoginDTO {
 
     private Long id;
 
@@ -106,10 +106,12 @@ public class ReporteDTO implements Serializable {
         this.doctor = doctor;
     }
 
+    @Override
     public UserDTO getUser() {
         return user;
     }
 
+    @Override
     public void setUser(UserDTO user) {
         this.user = user;
     }

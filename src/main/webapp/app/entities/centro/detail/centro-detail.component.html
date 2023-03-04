@@ -18,32 +18,34 @@
         <dd>
           <span>{{ centro.nombre }}</span>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.centro.createdBy">Created By</span></dt>
-        <dd>
-          <span>{{ centro.createdBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.centro.createdDate">Created Date</span></dt>
-        <dd>
-          <span>{{ centro.createdDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.centro.lastModifiedBy">Last Modified By</span></dt>
-        <dd>
-          <span>{{ centro.lastModifiedBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.centro.lastModifiedDate">Last Modified Date</span></dt>
-        <dd>
-          <span>{{ centro.lastModifiedDate | formatMediumDatetime }}</span>
-        </dd>
         <dt><span jhiTranslate="reportemercadeoApp.centro.ciudad">Ciudad</span></dt>
         <dd>
           <div *ngIf="centro.ciudad">
             <a [routerLink]="['/ciudad', centro.ciudad.id, 'view']">{{ centro.ciudad.nombre }}</a>
           </div>
         </dd>
-        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="reportemercadeoApp.centro.user">User</span></dt>
-        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
-          <span>{{ centro.user?.login }}</span>
-        </dd>
+        <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <dt><span jhiTranslate="reportemercadeoApp.centro.user">User</span></dt>
+          <dd>
+            <span>{{ centro.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.centro.createdBy">Created By</span></dt>
+          <dd>
+            <span>{{ centro.createdBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.centro.createdDate">Created Date</span></dt>
+          <dd>
+            <span>{{ centro.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.centro.lastModifiedBy">Last Modified By</span></dt>
+          <dd>
+            <span>{{ centro.lastModifiedBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.centro.lastModifiedDate">Last Modified Date</span></dt>
+          <dd>
+            <span>{{ centro.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
+        </ng-container>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

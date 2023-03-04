@@ -59,69 +59,6 @@
             </small>
           </div>
         </div>
-
-        <div class="row mb-3" *ngIf="editForm.controls.createdBy.value !== null">
-          <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.createdBy" for="field_createdBy">Created By</label>
-          <input
-            type="text"
-            class="form-control"
-            name="createdBy"
-            id="field_createdBy"
-            data-cy="createdBy"
-            formControlName="createdBy"
-            [readonly]="true"
-          />
-        </div>
-
-        <div class="row mb-3" *ngIf="editForm.controls.createdDate.value !== null">
-          <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.createdDate" for="field_createdDate">Created Date</label>
-          <div class="d-flex">
-            <input
-              id="field_createdDate"
-              data-cy="createdDate"
-              type="datetime-local"
-              class="form-control"
-              name="createdDate"
-              formControlName="createdDate"
-              placeholder="YYYY-MM-DD HH:mm"
-              [readonly]="true"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3" *ngIf="editForm.controls.lastModifiedBy.value !== null">
-          <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy" for="field_lastModifiedBy"
-            >Last Modified By</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="lastModifiedBy"
-            id="field_lastModifiedBy"
-            data-cy="lastModifiedBy"
-            formControlName="lastModifiedBy"
-            [readonly]="true"
-          />
-        </div>
-
-        <div class="row mb-3" *ngIf="editForm.controls.lastModifiedDate.value !== null">
-          <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate" for="field_lastModifiedDate"
-            >Last Modified Date</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_lastModifiedDate"
-              data-cy="lastModifiedDate"
-              type="datetime-local"
-              class="form-control"
-              name="lastModifiedDate"
-              formControlName="lastModifiedDate"
-              placeholder="YYYY-MM-DD HH:mm"
-              [readonly]="true"
-            />
-          </div>
-        </div>
-
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.centro" for="field_centro">Centro</label>
           <select
@@ -152,13 +89,76 @@
           </select>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.user" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-            <option [ngValue]="null"></option>
-            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.login }}</option>
-          </select>
-        </div>
+        <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <div class="row mb-3">
+            <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+              <option [ngValue]="null"></option>
+              <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.login }}</option>
+            </select>
+          </div>
+          <div class="row mb-3" *ngIf="editForm.controls.createdBy.value !== null">
+            <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.createdBy" for="field_createdBy">Created By</label>
+            <input
+              type="text"
+              class="form-control"
+              name="createdBy"
+              id="field_createdBy"
+              data-cy="createdBy"
+              formControlName="createdBy"
+              [readonly]="true"
+            />
+          </div>
+
+          <div class="row mb-3" *ngIf="editForm.controls.createdDate.value !== null">
+            <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.createdDate" for="field_createdDate">Created Date</label>
+            <div class="d-flex">
+              <input
+                id="field_createdDate"
+                data-cy="createdDate"
+                type="datetime-local"
+                class="form-control"
+                name="createdDate"
+                formControlName="createdDate"
+                placeholder="YYYY-MM-DD HH:mm"
+                [readonly]="true"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3" *ngIf="editForm.controls.lastModifiedBy.value !== null">
+            <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy" for="field_lastModifiedBy"
+              >Last Modified By</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="lastModifiedBy"
+              id="field_lastModifiedBy"
+              data-cy="lastModifiedBy"
+              formControlName="lastModifiedBy"
+              [readonly]="true"
+            />
+          </div>
+
+          <div class="row mb-3" *ngIf="editForm.controls.lastModifiedDate.value !== null">
+            <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate" for="field_lastModifiedDate"
+              >Last Modified Date</label
+            >
+            <div class="d-flex">
+              <input
+                id="field_lastModifiedDate"
+                data-cy="lastModifiedDate"
+                type="datetime-local"
+                class="form-control"
+                name="lastModifiedDate"
+                formControlName="lastModifiedDate"
+                placeholder="YYYY-MM-DD HH:mm"
+                [readonly]="true"
+              />
+            </div>
+          </div>
+        </ng-container>
       </div>
 
       <div>

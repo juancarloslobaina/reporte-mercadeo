@@ -1,8 +1,11 @@
 package com.labreferencia.web.rest;
 
 import com.labreferencia.repository.DoctorRepository;
+import com.labreferencia.security.AuthoritiesConstants;
+import com.labreferencia.security.SecurityUtils;
 import com.labreferencia.service.DoctorQueryService;
 import com.labreferencia.service.DoctorService;
+import com.labreferencia.service.UserService;
 import com.labreferencia.service.criteria.DoctorCriteria;
 import com.labreferencia.service.dto.DoctorDTO;
 import com.labreferencia.web.rest.errors.BadRequestAlertException;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,10 +50,18 @@ public class DoctorResource {
 
     private final DoctorQueryService doctorQueryService;
 
-    public DoctorResource(DoctorService doctorService, DoctorRepository doctorRepository, DoctorQueryService doctorQueryService) {
+    private final UserService userService;
+
+    public DoctorResource(
+        DoctorService doctorService,
+        DoctorRepository doctorRepository,
+        DoctorQueryService doctorQueryService,
+        UserService userService
+    ) {
         this.doctorService = doctorService;
         this.doctorRepository = doctorRepository;
         this.doctorQueryService = doctorQueryService;
+        this.userService = userService;
     }
 
     /**
@@ -65,6 +77,8 @@ public class DoctorResource {
         if (doctorDTO.getId() != null) {
             throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (userService.setUserByUserLogin(doctorDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
+
         DoctorDTO result = doctorService.save(doctorDTO);
         return ResponseEntity
             .created(new URI("/api/doctors/" + result.getId()))
@@ -88,16 +102,7 @@ public class DoctorResource {
         @Valid @RequestBody DoctorDTO doctorDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Doctor : {}, {}", id, doctorDTO);
-        if (doctorDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, doctorDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!doctorRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
+        if (validateDTOParameters(id, doctorDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
 
         DoctorDTO result = doctorService.update(doctorDTO);
         return ResponseEntity
@@ -123,16 +128,7 @@ public class DoctorResource {
         @NotNull @RequestBody DoctorDTO doctorDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Doctor partially : {}, {}", id, doctorDTO);
-        if (doctorDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, doctorDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!doctorRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
+        if (validateDTOParameters(id, doctorDTO)) return new ResponseEntity("error.http.403", HttpStatus.FORBIDDEN);
 
         Optional<DoctorDTO> result = doctorService.partialUpdate(doctorDTO);
 
@@ -155,7 +151,12 @@ public class DoctorResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get Doctors by criteria: {}", criteria);
-        Page<DoctorDTO> page = doctorQueryService.findByCriteria(criteria, pageable);
+        Page<DoctorDTO> page;
+        if (SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ADMIN)) {
+            page = doctorService.findByUserLogin(SecurityUtils.getCurrentUserLogin().orElse(null), pageable);
+        } else {
+            page = doctorQueryService.findByCriteria(criteria, pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -182,6 +183,10 @@ public class DoctorResource {
     public ResponseEntity<DoctorDTO> getDoctor(@PathVariable Long id) {
         log.debug("REST request to get Doctor : {}", id);
         Optional<DoctorDTO> doctorDTO = doctorService.findOne(id);
+        if (userService.checkUserIsCurrentOrAdministrator(doctorDTO.orElse(null))) return new ResponseEntity(
+            "Unauthorized",
+            HttpStatus.UNAUTHORIZED
+        );
         return ResponseUtil.wrapOrNotFound(doctorDTO);
     }
 
@@ -194,10 +199,30 @@ public class DoctorResource {
     @DeleteMapping("/doctors/{id}")
     public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
         log.debug("REST request to delete Doctor : {}", id);
+        Optional<DoctorDTO> doctorDTO = doctorService.findOne(id);
+        if (userService.checkUserIsCurrentOrAdministrator(doctorDTO.orElse(null))) return new ResponseEntity(
+            "Unauthorized",
+            HttpStatus.UNAUTHORIZED
+        );
         doctorService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private boolean validateDTOParameters(Long id, DoctorDTO doctorDTO) {
+        if (doctorDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, doctorDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!doctorRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        return (userService.setUserByUserLogin(doctorDTO));
     }
 }

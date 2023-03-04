@@ -40,4 +40,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>, JpaSpecif
 
     @Query("select doctor from Doctor doctor left join fetch doctor.especialidad left join fetch doctor.user where doctor.id =:id")
     Optional<Doctor> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Page<Doctor> findByUserLogin(String currentUsername, Pageable pageable);
 }

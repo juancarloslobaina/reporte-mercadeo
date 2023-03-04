@@ -63,4 +63,6 @@ public interface ReporteService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<ReporteDTO> findByUserLogin(String currentUsername, Pageable pageable);
 }

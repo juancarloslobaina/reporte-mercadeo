@@ -44,4 +44,6 @@ public interface ReporteRepository extends JpaRepository<Reporte, Long>, JpaSpec
         "select reporte from Reporte reporte left join fetch reporte.centro left join fetch reporte.doctor left join fetch reporte.user where reporte.id =:id"
     )
     Optional<Reporte> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Page<Reporte> findByUserLogin(String currentUsername, Pageable pageable);
 }

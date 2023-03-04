@@ -22,22 +22,6 @@
         <dd>
           <span>{{ reporte.fecha | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.reporte.createdBy">Created By</span></dt>
-        <dd>
-          <span>{{ reporte.createdBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.reporte.createdDate">Created Date</span></dt>
-        <dd>
-          <span>{{ reporte.createdDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy">Last Modified By</span></dt>
-        <dd>
-          <span>{{ reporte.lastModifiedBy }}</span>
-        </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate">Last Modified Date</span></dt>
-        <dd>
-          <span>{{ reporte.lastModifiedDate | formatMediumDatetime }}</span>
-        </dd>
         <dt><span jhiTranslate="reportemercadeoApp.reporte.centro">Centro</span></dt>
         <dd>
           <div *ngIf="reporte.centro">
@@ -50,10 +34,28 @@
             <a [routerLink]="['/doctor', reporte.doctor.id, 'view']">{{ reporte.doctor.nombre }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="reportemercadeoApp.reporte.user">User</span></dt>
-        <dd>
-          <span>{{ reporte.user?.login }}</span>
-        </dd>
+        <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <dt><span jhiTranslate="reportemercadeoApp.reporte.user">User</span></dt>
+          <dd>
+            <span>{{ reporte.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.reporte.createdBy">Created By</span></dt>
+          <dd>
+            <span>{{ reporte.createdBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.reporte.createdDate">Created Date</span></dt>
+          <dd>
+            <span>{{ reporte.createdDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.reporte.lastModifiedBy">Last Modified By</span></dt>
+          <dd>
+            <span>{{ reporte.lastModifiedBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="reportemercadeoApp.reporte.lastModifiedDate">Last Modified Date</span></dt>
+          <dd>
+            <span>{{ reporte.lastModifiedDate | formatMediumDatetime }}</span>
+          </dd>
+        </ng-container>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
