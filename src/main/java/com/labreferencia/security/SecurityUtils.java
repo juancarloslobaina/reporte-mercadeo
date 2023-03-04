@@ -75,6 +75,17 @@ public final class SecurityUtils {
     }
 
     /**
+     * Checks if the current user has only this of the authorities.
+     *
+     * @param authority the authority to check.
+     * @return true if the current user has only this of the authorities, false otherwise.
+     */
+    public static boolean hasCurrentUserOnlyThisAuthorities(String authority) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (authentication != null && getAuthorities(authentication).allMatch(auth -> auth.equals(authority)));
+    }
+
+    /**
      * Checks if the current user has none of the authorities.
      *
      * @param authorities the authorities to check.

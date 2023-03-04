@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -151,12 +152,16 @@ public class DoctorResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get Doctors by criteria: {}", criteria);
-        Page<DoctorDTO> page;
-        if (SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ADMIN)) {
-            page = doctorService.findByUserLogin(SecurityUtils.getCurrentUserLogin().orElse(null), pageable);
-        } else {
-            page = doctorQueryService.findByCriteria(criteria, pageable);
+        if (SecurityUtils.hasCurrentUserOnlyThisAuthorities(AuthoritiesConstants.USER)) {
+            SecurityUtils
+                .getCurrentUserLogin()
+                .ifPresent(login ->
+                    userService
+                        .getUserWithAuthoritiesByLogin(login)
+                        .ifPresent(userId -> criteria.setUserId((LongFilter) new LongFilter().setEquals(userId.getId())))
+                );
         }
+        Page<DoctorDTO> page = doctorQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
