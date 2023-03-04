@@ -172,6 +172,30 @@
             </li>
           </ul>
         </li>
+
+        <li
+          *jhiHasAnyAuthority="'ROLE_SUPERVISOR'"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="supervisor-menu" data-cy="supervisorMenu">
+            <span>
+              <fa-icon icon="users-cog"></fa-icon>
+              <span jhiTranslate="global.menu.admin.main">Administración</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="supervisor-menu">
+            <li>
+              <a class="dropdown-item" routerLink="supervisor/dashboard" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.userManagement">Gestión de usuarios</span>
+              </a>
+            </li>
+          </ul>
+        </li>
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
