@@ -8,6 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IDoctor, NewDoctor } from '../doctor.model';
+import { SearchWithPagination } from '../../../core/request/request.model';
 
 export type PartialUpdateDoctor = Partial<IDoctor> & Pick<IDoctor, 'id'>;
 
@@ -59,6 +60,13 @@ export class DoctorService {
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestDoctor[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestDoctor[]>(this.resourceUrl, { params: options, observe: 'response' })

@@ -8,6 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEspecialidad, NewEspecialidad } from '../especialidad.model';
+import { SearchWithPagination } from '../../../core/request/request.model';
 
 export type PartialUpdateEspecialidad = Partial<IEspecialidad> & Pick<IEspecialidad, 'id'>;
 
@@ -59,6 +60,13 @@ export class EspecialidadService {
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestEspecialidad[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestEspecialidad[]>(this.resourceUrl, { params: options, observe: 'response' })

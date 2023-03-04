@@ -59,43 +59,69 @@
             </small>
           </div>
         </div>
+
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.centro" for="field_centro">Centro</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_centro"
             data-cy="centro"
             name="centro"
+            field="nombre"
             formControlName="centro"
-            [compareWith]="compareCentro"
+            [suggestions]="centrosSharedCollection"
+            (completeMethod)="buscarCentro($event)"
+            (onDropdownClick)="buscarCentro($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="centroOption" *ngFor="let centroOption of centrosSharedCollection">{{ centroOption.nombre }}</option>
-          </select>
+            <ng-template let-centro pTemplate="item">
+              <div>
+                <div>{{ centro.nombre }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.doctor" for="field_doctor">Doctor</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_doctor"
             data-cy="doctor"
             name="doctor"
+            field="nombre"
             formControlName="doctor"
-            [compareWith]="compareDoctor"
+            [suggestions]="doctorsSharedCollection"
+            (completeMethod)="buscarDoctor($event)"
+            (onDropdownClick)="buscarDoctor($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.nombre }}</option>
-          </select>
+            <ng-template let-doctor pTemplate="item">
+              <div>
+                <div>{{ doctor.nombre }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
 
         <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <div class="row mb-3">
             <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-              <option [ngValue]="null"></option>
-              <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.login }}</option>
-            </select>
+            <p-autoComplete
+              id="field_user"
+              data-cy="user"
+              name="user"
+              field="login"
+              formControlName="user"
+              [suggestions]="usersSharedCollection"
+              (completeMethod)="buscarUsuario($event)"
+              (onDropdownClick)="buscarUsuario($event)"
+              [dropdown]="true"
+            >
+              <ng-template let-user pTemplate="item">
+                <div>
+                  <div>{{ user.login }}</div>
+                </div>
+              </ng-template>
+            </p-autoComplete>
           </div>
           <div class="row mb-3" *ngIf="editForm.controls.createdBy.value !== null">
             <label class="form-label" jhiTranslate="reportemercadeoApp.reporte.createdBy" for="field_createdBy">Created By</label>

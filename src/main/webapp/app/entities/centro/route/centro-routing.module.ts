@@ -6,14 +6,14 @@ import { CentroComponent } from '../list/centro.component';
 import { CentroDetailComponent } from '../detail/centro-detail.component';
 import { CentroUpdateComponent } from '../update/centro-update.component';
 import { CentroRoutingResolveService } from './centro-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { ASC, DESC } from 'app/config/navigation.constants';
 
 const centroRoute: Routes = [
   {
     path: '',
     component: CentroComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'createdDate,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

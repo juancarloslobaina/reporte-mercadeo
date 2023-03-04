@@ -6,14 +6,14 @@ import { ReporteComponent } from '../list/reporte.component';
 import { ReporteDetailComponent } from '../detail/reporte-detail.component';
 import { ReporteUpdateComponent } from '../update/reporte-update.component';
 import { ReporteRoutingResolveService } from './reporte-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const reporteRoute: Routes = [
   {
     path: '',
     component: ReporteComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'createdDate,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

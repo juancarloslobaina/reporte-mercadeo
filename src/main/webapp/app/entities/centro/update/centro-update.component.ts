@@ -62,6 +62,34 @@ export class CentroUpdateComponent implements OnInit {
     }
   }
 
+  buscarCiudad($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      'nombre.contains': $event.query,
+      sort: ['id,asc'],
+    };
+    this.ciudadService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<ICiudad[]>) => res.body ?? []))
+      .pipe(map((ciudads: ICiudad[]) => this.ciudadService.addCiudadToCollectionIfMissing<ICiudad>(ciudads, this.centro?.ciudad)))
+      .subscribe((ciudads: ICiudad[]) => (this.ciudadsSharedCollection = ciudads));
+  }
+
+  buscarUsuario($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: $event.query,
+      sort: ['id,asc'],
+    };
+    this.userService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.centro?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICentro>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),

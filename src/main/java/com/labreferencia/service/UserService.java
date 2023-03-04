@@ -354,4 +354,16 @@ public class UserService {
             SecurityUtils.hasCurrentUserNoneOfAuthorities(AuthoritiesConstants.ADMIN)
         );
     }
+
+    @Transactional(readOnly = true)
+    public Page<AdminUserDTO> findAllAdminByCriteria(String query, Pageable pageable) {
+        return userRepository
+            .findAllByLoginContainsOrFirstNameContainsOrLastNameContains(query, query, query, pageable)
+            .map(AdminUserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> findAllPublicByCriteria(String query, Pageable pageable) {
+        return userRepository.findAllByLoginContainsOrFirstNameContainsOrLastNameContains(query, query, query, pageable).map(UserDTO::new);
+    }
 }

@@ -11,6 +11,7 @@ import { IEspecialidad } from 'app/entities/especialidad/especialidad.model';
 import { EspecialidadService } from 'app/entities/especialidad/service/especialidad.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { ICiudad } from '../../ciudad/ciudad.model';
 
 @Component({
   selector: 'jhi-doctor-update',
@@ -61,6 +62,38 @@ export class DoctorUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.doctorService.create(doctor));
     }
+  }
+
+  buscarEspecialidad($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      'descripcion.contains': $event.query,
+      sort: ['id,asc'],
+    };
+    this.especialidadService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IEspecialidad[]>) => res.body ?? []))
+      .pipe(
+        map((especialidads: IEspecialidad[]) =>
+          this.especialidadService.addEspecialidadToCollectionIfMissing<IEspecialidad>(especialidads, this.doctor?.especialidad)
+        )
+      )
+      .subscribe((especialidads: IEspecialidad[]) => (this.especialidadsSharedCollection = especialidads));
+  }
+
+  buscarUsuario($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: $event.query,
+      sort: ['id,asc'],
+    };
+    this.userService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.doctor?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDoctor>>): void {

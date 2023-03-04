@@ -6,14 +6,14 @@ import { EspecialidadComponent } from '../list/especialidad.component';
 import { EspecialidadDetailComponent } from '../detail/especialidad-detail.component';
 import { EspecialidadUpdateComponent } from '../update/especialidad-update.component';
 import { EspecialidadRoutingResolveService } from './especialidad-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { ASC, DESC } from 'app/config/navigation.constants';
 
 const especialidadRoute: Routes = [
   {
     path: '',
     component: EspecialidadComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'createdDate,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

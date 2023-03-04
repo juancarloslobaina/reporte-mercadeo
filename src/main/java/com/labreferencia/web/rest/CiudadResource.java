@@ -1,7 +1,9 @@
 package com.labreferencia.web.rest;
 
 import com.labreferencia.repository.CiudadRepository;
+import com.labreferencia.service.CiudadQueryService;
 import com.labreferencia.service.CiudadService;
+import com.labreferencia.service.criteria.CiudadCriteria;
 import com.labreferencia.service.dto.CiudadDTO;
 import com.labreferencia.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +44,12 @@ public class CiudadResource {
 
     private final CiudadRepository ciudadRepository;
 
-    public CiudadResource(CiudadService ciudadService, CiudadRepository ciudadRepository) {
+    private final CiudadQueryService ciudadQueryService;
+
+    public CiudadResource(CiudadService ciudadService, CiudadRepository ciudadRepository, CiudadQueryService ciudadQueryService) {
         this.ciudadService = ciudadService;
         this.ciudadRepository = ciudadRepository;
+        this.ciudadQueryService = ciudadQueryService;
     }
 
     /**
@@ -145,9 +149,12 @@ public class CiudadResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ciudads in body.
      */
     @GetMapping("/ciudads")
-    public ResponseEntity<List<CiudadDTO>> getAllCiudads(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<CiudadDTO>> getAllCiudads(
+        CiudadCriteria ciudadCriteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
         log.debug("REST request to get a page of Ciudads");
-        Page<CiudadDTO> page = ciudadService.findAll(pageable);
+        Page<CiudadDTO> page = ciudadQueryService.findByCriteria(ciudadCriteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

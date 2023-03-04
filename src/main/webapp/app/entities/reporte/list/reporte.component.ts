@@ -4,7 +4,7 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IReporte } from '../reporte.model';
+import { IReporte, NewReporte } from '../reporte.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
@@ -85,6 +85,22 @@ export class ReporteComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
+  duplicate(reporte: IReporte): void {
+    const newReporte: NewReporte = {
+      descripcion: reporte.descripcion,
+      fecha: reporte.fecha,
+      centro: reporte.centro,
+      doctor: reporte.doctor,
+      user: reporte.user,
+      id: null,
+    };
+    this.reporteService.create(newReporte).subscribe(resp => {
+      this.router.navigate(['/reporte', resp.body?.id, 'edit'], {
+        relativeTo: this.activatedRoute,
+      });
+    });
+  }
+
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -93,6 +109,8 @@ export class ReporteComponent implements OnInit {
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
+    console.log(params);
+    console.log(data);
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');

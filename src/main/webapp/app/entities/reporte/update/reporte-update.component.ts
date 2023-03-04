@@ -88,6 +88,48 @@ export class ReporteUpdateComponent implements OnInit {
     }
   }
 
+  buscarCentro($event: any) {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      'nombre.contains': $event.query,
+      sort: ['id,asc'],
+    };
+    this.centroService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<ICentro[]>) => res.body ?? []))
+      .pipe(map((centros: ICentro[]) => this.centroService.addCentroToCollectionIfMissing<ICentro>(centros, this.reporte?.centro)))
+      .subscribe((centros: ICentro[]) => (this.centrosSharedCollection = centros));
+  }
+
+  buscarDoctor($event: any) {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      'nombre.contains': $event.query,
+      sort: ['id,asc'],
+    };
+    this.doctorService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IDoctor[]>) => res.body ?? []))
+      .pipe(map((doctors: IDoctor[]) => this.doctorService.addDoctorToCollectionIfMissing<IDoctor>(doctors, this.reporte?.doctor)))
+      .subscribe((doctors: IDoctor[]) => (this.doctorsSharedCollection = doctors));
+  }
+
+  buscarUsuario($event: any): void {
+    const queryObject: any = {
+      page: 0,
+      size: 20,
+      query: $event.query,
+      sort: ['id,asc'],
+    };
+    this.userService
+      .search(queryObject)
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.reporte?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IReporte>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),

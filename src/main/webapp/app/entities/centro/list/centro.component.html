@@ -98,7 +98,7 @@
               <a [routerLink]="['/ciudad', centro.ciudad.id, 'view']">{{ centro.ciudad.nombre }}</a>
             </div>
           </td>
-          <ng-template *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <td>
               {{ centro.user?.login }}
             </td>
@@ -106,7 +106,7 @@
             <td>{{ centro.createdDate | formatMediumDatetime }}</td>
             <td>{{ centro.lastModifiedBy }}</td>
             <td>{{ centro.lastModifiedDate | formatMediumDatetime }}</td>
-          </ng-template>
+          </ng-container>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/centro', centro.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

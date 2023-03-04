@@ -6,14 +6,14 @@ import { DoctorComponent } from '../list/doctor.component';
 import { DoctorDetailComponent } from '../detail/doctor-detail.component';
 import { DoctorUpdateComponent } from '../update/doctor-update.component';
 import { DoctorRoutingResolveService } from './doctor-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { ASC, DESC } from 'app/config/navigation.constants';
 
 const doctorRoute: Routes = [
   {
     path: '',
     component: DoctorComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'createdDate,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

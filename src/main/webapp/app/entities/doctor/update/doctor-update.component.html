@@ -130,28 +130,45 @@
         </div>
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="reportemercadeoApp.doctor.especialidad" for="field_especialidad">Especialidad</label>
-          <select
-            class="form-control"
+          <p-autoComplete
             id="field_especialidad"
             data-cy="especialidad"
             name="especialidad"
+            field="descripcion"
             formControlName="especialidad"
-            [compareWith]="compareEspecialidad"
+            [suggestions]="especialidadsSharedCollection"
+            (completeMethod)="buscarEspecialidad($event)"
+            (onDropdownClick)="buscarEspecialidad($event)"
+            [dropdown]="true"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="especialidadOption" *ngFor="let especialidadOption of especialidadsSharedCollection">
-              {{ especialidadOption.descripcion }}
-            </option>
-          </select>
+            <ng-template let-especialidad pTemplate="item">
+              <div>
+                <div>{{ especialidad.descripcion }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
         </div>
 
         <ng-container *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <div class="row mb-3">
             <label class="form-label" jhiTranslate="reportemercadeoApp.doctor.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-              <option [ngValue]="null"></option>
-              <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.login }}</option>
-            </select>
+            <p-autoComplete
+              id="field_user"
+              data-cy="user"
+              name="user"
+              field="login"
+              formControlName="user"
+              [suggestions]="usersSharedCollection"
+              (completeMethod)="buscarUsuario($event)"
+              (onDropdownClick)="buscarUsuario($event)"
+              [dropdown]="true"
+            >
+              <ng-template let-user pTemplate="item">
+                <div>
+                  <div>{{ user.login }}</div>
+                </div>
+              </ng-template>
+            </p-autoComplete>
           </div>
           <div class="row mb-3" *ngIf="editForm.controls.createdBy.value !== null">
             <label class="form-label" jhiTranslate="reportemercadeoApp.doctor.createdBy" for="field_createdBy">Created By</label>

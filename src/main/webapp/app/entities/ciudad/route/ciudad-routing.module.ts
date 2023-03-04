@@ -6,14 +6,14 @@ import { CiudadComponent } from '../list/ciudad.component';
 import { CiudadDetailComponent } from '../detail/ciudad-detail.component';
 import { CiudadUpdateComponent } from '../update/ciudad-update.component';
 import { CiudadRoutingResolveService } from './ciudad-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { ASC, DESC } from 'app/config/navigation.constants';
 
 const ciudadRoute: Routes = [
   {
     path: '',
     component: CiudadComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'createdDate,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },
