@@ -90,6 +90,9 @@ public class ReporteQueryService extends QueryService<Reporte> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Reporte_.id));
             }
+            if (criteria.getDescripcion() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescripcion(), Reporte_.descripcion));
+            }
             if (criteria.getFecha() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getFecha(), Reporte_.fecha));
             }

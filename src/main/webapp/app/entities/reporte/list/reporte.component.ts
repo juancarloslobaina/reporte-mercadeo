@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, EMPTY, filter, Observable, of, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IReporte, NewReporte } from '../reporte.model';
@@ -12,18 +12,27 @@ import { EntityArrayResponseType, ReporteService } from '../service/reporte.serv
 import { ReporteDeleteDialogComponent } from '../delete/reporte-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
+import { saveAs } from 'file-saver';
+import dayjs from 'dayjs/esm';
+import { DoctorService } from '../../doctor/service/doctor.service';
+import { CentroService } from '../../centro/service/centro.service';
+import { IDoctor } from '../../doctor/doctor.model';
+import { mergeMap } from 'rxjs/operators';
+import { DATE_FORMAT } from '../../../config/input.constants';
 
 @Component({
   selector: 'jhi-reporte',
   templateUrl: './reporte.component.html',
 })
 export class ReporteComponent implements OnInit {
+  private static readonly NOT_SORTABLE_FIELDS_AFTER_SEARCH = ['descripcion'];
   reportes?: IReporte[];
   isLoading = false;
 
   predicate = 'id';
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
+  currentSearch = '';
 
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -32,12 +41,28 @@ export class ReporteComponent implements OnInit {
   constructor(
     protected reporteService: ReporteService,
     protected activatedRoute: ActivatedRoute,
+    protected doctorService: DoctorService,
+    protected centroService: CentroService,
     public router: Router,
     protected dataUtils: DataUtils,
     protected modalService: NgbModal
   ) {}
 
   trackId = (_index: number, item: IReporte): number => this.reporteService.getReporteIdentifier(item);
+
+  search(query: string): void {
+    if (query && ReporteComponent.NOT_SORTABLE_FIELDS_AFTER_SEARCH.includes(this.predicate)) {
+      this.predicate = 'id';
+      this.ascending = true;
+    }
+    this.page = 1;
+    this.currentSearch = query;
+    if (query) {
+      this.filters = new FilterOptions();
+      this.filters.addFilter('descripcion.contains', query);
+    }
+    this.navigateToWithComponentValues();
+  }
 
   ngOnInit(): void {
     this.load();
@@ -101,6 +126,51 @@ export class ReporteComponent implements OnInit {
     });
   }
 
+  export() {
+    let data = this.reportes?.map(r => {
+      return {
+        Observacion: r.descripcion,
+        Fecha: r.fecha?.format(DATE_FORMAT),
+        Doctor: r.doctor?.nombre,
+        Telefono: r.doctor?.telefonoPersonal,
+        Email: r.doctor?.correoCorporativo,
+        Especialidad: '',
+        Centro: r.centro?.nombre,
+      };
+    });
+  }
+
+  exportExcel() {
+    import('xlsx').then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(
+        this.reportes?.map(r => {
+          console.log(r);
+          return {
+            Observacion: r.descripcion,
+            Fecha: r.fecha?.format(DATE_FORMAT),
+            Doctor: r.doctor?.nombre,
+            Telefono: r.doctor?.telefonoPersonal,
+            Email: r.doctor?.correoCorporativo,
+            Especialidad: r.doctor?.especialidad?.descripcion,
+            Centro: r.centro?.nombre,
+          };
+        }) ?? []
+      );
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'reportes');
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE,
+    });
+    saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -109,8 +179,6 @@ export class ReporteComponent implements OnInit {
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
-    console.log(params);
-    console.log(data);
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');

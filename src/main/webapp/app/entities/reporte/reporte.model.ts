@@ -2,6 +2,7 @@ import dayjs from 'dayjs/esm';
 import { ICentro } from 'app/entities/centro/centro.model';
 import { IDoctor } from 'app/entities/doctor/doctor.model';
 import { IUser } from 'app/entities/user/user.model';
+import { IEspecialidad } from '../especialidad/especialidad.model';
 
 export interface IReporte {
   id: number;
@@ -12,7 +13,7 @@ export interface IReporte {
   lastModifiedBy?: string | null;
   lastModifiedDate?: dayjs.Dayjs | null;
   centro?: Pick<ICentro, 'id' | 'nombre'> | null;
-  doctor?: Pick<IDoctor, 'id' | 'nombre'> | null;
+  doctor?: Pick<IDoctor, 'id' | 'nombre' | 'telefonoPersonal' | 'correoCorporativo' | 'especialidad'> | null;
   user?: Pick<IUser, 'id' | 'login'> | null;
 }
 

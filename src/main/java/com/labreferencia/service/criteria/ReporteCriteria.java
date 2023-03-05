@@ -23,6 +23,8 @@ public class ReporteCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter descripcion;
+
     private InstantFilter fecha;
 
     private StringFilter createdBy;
@@ -45,6 +47,7 @@ public class ReporteCriteria implements Serializable, Criteria {
 
     public ReporteCriteria(ReporteCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.descripcion = other.descripcion == null ? null : other.descripcion.copy();
         this.fecha = other.fecha == null ? null : other.fecha.copy();
         this.createdBy = other.createdBy == null ? null : other.createdBy.copy();
         this.createdDate = other.createdDate == null ? null : other.createdDate.copy();
@@ -74,6 +77,21 @@ public class ReporteCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getDescripcion() {
+        return descripcion;
+    }
+
+    public StringFilter descripcion() {
+        if (descripcion == null) {
+            descripcion = new StringFilter();
+        }
+        return descripcion;
+    }
+
+    public void setDescripcion(StringFilter descripcion) {
+        this.descripcion = descripcion;
     }
 
     public InstantFilter getFecha() {
@@ -215,6 +233,7 @@ public class ReporteCriteria implements Serializable, Criteria {
         final ReporteCriteria that = (ReporteCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(descripcion, that.descripcion) &&
             Objects.equals(fecha, that.fecha) &&
             Objects.equals(createdBy, that.createdBy) &&
             Objects.equals(createdDate, that.createdDate) &&
@@ -229,7 +248,19 @@ public class ReporteCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fecha, createdBy, createdDate, lastModifiedBy, lastModifiedDate, centroId, doctorId, userId, distinct);
+        return Objects.hash(
+            id,
+            descripcion,
+            fecha,
+            createdBy,
+            createdDate,
+            lastModifiedBy,
+            lastModifiedDate,
+            centroId,
+            doctorId,
+            userId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -237,6 +268,7 @@ public class ReporteCriteria implements Serializable, Criteria {
     public String toString() {
         return "ReporteCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (descripcion != null ? "descripcion=" + descripcion + ", " : "") +
             (fecha != null ? "fecha=" + fecha + ", " : "") +
             (createdBy != null ? "createdBy=" + createdBy + ", " : "") +
             (createdDate != null ? "createdDate=" + createdDate + ", " : "") +

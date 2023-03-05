@@ -1,13 +1,7 @@
 package com.labreferencia.service.mapper;
 
-import com.labreferencia.domain.Centro;
-import com.labreferencia.domain.Doctor;
-import com.labreferencia.domain.Reporte;
-import com.labreferencia.domain.User;
-import com.labreferencia.service.dto.CentroDTO;
-import com.labreferencia.service.dto.DoctorDTO;
-import com.labreferencia.service.dto.ReporteDTO;
-import com.labreferencia.service.dto.UserDTO;
+import com.labreferencia.domain.*;
+import com.labreferencia.service.dto.*;
 import org.mapstruct.*;
 
 /**
@@ -30,6 +24,11 @@ public interface ReporteMapper extends EntityMapper<ReporteDTO, Reporte> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nombre", source = "nombre")
+    @Mapping(target = "telefonoPersonal", source = "telefonoPersonal")
+    @Mapping(target = "telefonoCorporativo", source = "telefonoCorporativo")
+    @Mapping(target = "correoPersonal", source = "correoPersonal")
+    @Mapping(target = "correoCorporativo", source = "correoCorporativo")
+    @Mapping(target = "especialidad", source = "especialidad", qualifiedByName = "especialidadDescripcion")
     DoctorDTO toDtoDoctorNombre(Doctor doctor);
 
     @Named("userLogin")
@@ -37,4 +36,10 @@ public interface ReporteMapper extends EntityMapper<ReporteDTO, Reporte> {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "login", source = "login")
     UserDTO toDtoUserLogin(User user);
+
+    @Named("especialidadDescripcion")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "descripcion", source = "descripcion")
+    EspecialidadDTO toDtoDoctorEspecialidadDescripcion(Especialidad especialidad);
 }
