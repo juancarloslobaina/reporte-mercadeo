@@ -46,7 +46,9 @@ relationship ManyToOne {
   Reporte{centro(nombre)} to Centro,
   Reporte{doctor(nombre)} to Doctor,
   Doctor{especialidad(descripcion)} to Especialidad
-  Centro{ciudad(nombre)} to Ciudad
+  Centro{ciudad(nombre)} to Ciudad,
+  Reporte{user} to User,
 }
 
+filter *
 use mapstruct, serviceImpl, pagination for *
